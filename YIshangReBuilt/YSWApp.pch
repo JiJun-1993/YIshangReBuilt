@@ -1,0 +1,83 @@
+//
+//  YSWApp.pch
+//  屹尚网
+//
+//  Created by mac on 6/22/16.
+//  Copyright © 2016 Jijun_iOS. All rights reserved.
+//
+
+#ifndef YSWApp_pch
+#define YSWApp_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#import "UIView+Frame.h"
+#import <WebKit/WebKit.h>
+#define JJKeyWindow [UIApplication sharedApplication].keyWindow
+#define mainBounds [UIScreen mainScreen].bounds;
+
+// 弹出分享view
+#import "JudgeLogView.h"
+// request
+//     @"http://www.baidu.com/"
+// @"http://www.vipysw.com/mobile/"
+#define HomeRequest @"http://www.vipysw.com/mobile/"
+#define MembCenter @"app=member"
+#define LoginRequest @"http://www.vipysw.com/"
+
+#define QQRequest @"https://openmobile.qq.com/oauth2.0/m_authlist?"
+
+// qqLogin
+#import "NSURLRequest+WithString.h"
+#import <TencentOpenAPI/TencentApiInterface.h>
+#import <TencentOpenAPI/TencentOAuthObject.h>
+#import <TencentOpenAPI/TencentOAuth.h>
+#import <TencentOpenAPI/QQApiInterface.h>
+#import <TencentOpenAPI/QQApiInterfaceObject.h>
+#import "QQManager.h"
+#define QQloginClick  @"graph.qq.com"
+#define QQAppId @"101227504"
+#define QQLoginUrl(openId,access_token)  [NSString stringWithFormat:@"http://www.vipysw.com/mobile/index.php?app=qqyswconnect&act=callback&openid=%@&access_token=%@",openId,access_token]
+
+#import "sdkCall.h"
+//#define access_token  @"DEC3D6C12E7C1A1615B43CA147B69577"
+
+
+//  WeiXinLogin
+#import "WXApi.h"
+#import "WXApiObject.h"
+#import "WXApiManager.h"
+static NSString *AuthScope = @"snsapi_userinfo";
+static NSString *AuthOpenID = @"wx2677e1c8a520f187";
+static NSString *AuthSecret  =@"53c08017c4ac6b9ff5184230b9408217";
+static NSString *AuthState = @"lct_ibestry_vipysw_login";
+
+
+static NSString *WxLogin = @"weixinconnect";
+static NSString *WxLoginClick = @"open.weixin";
+static NSString *WxLoginBack = @"callback";
+
+#define WxreqWithCode(code) [NSString stringWithFormat:@"http://www.vipysw.com/mobile/index.php?app=wxyswconnect&act=callback&code=%@",code]
+
+#define WxreqWithToken(appid,secret,code,grant_type) [NSString stringWithFormat:@"https://api.weixin.qq.com/sns/oauth2/access_token?appid=%@&secret=%@&code=%@&grant_type=%@",appid,secret,code,grant_type]
+
+// NetWorking Request
+
+#import "AFNetworking.h"
+#import "CZHttpTool.h"
+#import "SBJson/SBJson.h"
+#import "UIImage+Original.h"
+// SDWebImage
+#import "UIImageView+WebCache.h"
+// MBPgress
+#import "viewPro.h"
+#import "MBProgressHUD.h"
+// 自定义输出
+#ifdef DEBUG_MODE
+#define JJLog( s, ... ) NSLog( @"<%@:(%d)> %@", [[NSString stringWithUTF8String:__FILE__] lastPathComponent], __LINE__, [NSString stringWithFormat:(s), ##__VA_ARGS__] )
+#else
+#define JJLog( s, ... )
+#endif
+
+#endif /* YSWApp_pch */

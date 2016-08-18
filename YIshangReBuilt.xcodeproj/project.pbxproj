@@ -179,6 +179,7 @@
 				040FDDFB1D4E3976001B1B6C /* Share */,
 				04222B381D64613800AF7CB4 /* TabImage */,
 				040FDE061D4E39E1001B1B6C /* ProjectRelated     */,
+				04222B6A1D6461FD00AF7CB4 /* MoreCover */,
 				040FDDC51D4E3824001B1B6C /* Supporting Files */,
 			);
 			path = YIshangReBuilt;
@@ -187,7 +188,6 @@
 		040FDDC51D4E3824001B1B6C /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				04222B6A1D6461FD00AF7CB4 /* MoreCover */,
 				040FDDC61D4E3824001B1B6C /* main.m */,
 			);
 			name = "Supporting Files";

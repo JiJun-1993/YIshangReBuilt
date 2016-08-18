@@ -11,11 +11,13 @@
 #define screenBounds [UIScreen mainScreen].bounds
 #define NaviHeight 55
 #define Margin 5
-#define ItemSize 24
-#define sysFontSize  16
+#define ItemSize 26
+#define sysFontSize  20
 #define HomeRequest @"http://www.vipysw.com/mobile/"
 
-@interface ViewController ()<WKNavigationDelegate>
+#import "SeleObjView.h"
+#import "JudgeLogView.h"
+@interface ViewController ()<WKNavigationDelegate,JudgeLogViewDelegate,SeleObjViewDelegate>
 @property(nonatomic,strong)WKWebView* wkWebView;
 
 //@property (weak, nonatomic) IBOutlet UIWebView *wkWebView;
@@ -24,6 +26,16 @@
 
 @property(strong,nonatomic)UIButton* leftNaviItem;
 @property(strong,nonatomic)UIButton* btnShare;
+// 记录当前网址
+@property(strong,nonatomic)NSString* clickedUrl;
+// 点击分享视图 ，蒙版
+@property(strong,nonatomic)UIView* seleView;
+@property(nonatomic,strong)SeleObjView* seleObjView;
+@property(strong,nonatomic)JudgeLogView* seleObj;
+//  记录网页信息
+ @property(strong,nonatomic)NSArray* compArray;
+
+
 @end
 
 @implementation ViewController
@@ -36,6 +48,28 @@
     [self initParameter];
     
     [self setMainPage ];
+    
+    [self addNotiOfKeybod];
+    
+    [self setCover];
+}
+//懒加载
+      // 懒加载SeleObjView
+-(SeleObjView*)seleObjView{
+    if (_seleObjView == nil) {
+        _seleObjView = [SeleObjView seleView];
+    }
+    return _seleObjView;
+}
+    // 调用js 函数，懒加载网页info
+-(void)setCompArr{
+    //    NSString* comp =  [self.webView stringByEvaluatingJavaScriptFromString:@"app_get_share_ios()"];
+    NSString* js = @"app_get_share_ios()";
+    [_wkWebView evaluateJavaScript:js completionHandler:^(NSString *result, NSError *error)
+     {
+         _compArray = [result componentsSeparatedByString:@"#"];
+         
+     }];
 }
 -(void)setNaviBar{
 // 导航条
@@ -99,12 +133,10 @@
 -(void)initParameter{
     // 01
 //    _curntRequest = nil;
-//    _clickedUrl = nil;
+    _clickedUrl = nil;
     //  02  初始化新的webView
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
-    _wkWebView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:config];
     _wkWebView = [[WKWebView alloc]initWithFrame:CGRectZero configuration:config];
-    
     _wkWebView.x = 0;
     _wkWebView.y = CGRectGetMaxY(self.naviView.frame);
     _wkWebView.width = screenBounds.size.width;
@@ -123,6 +155,97 @@
     [self.view addSubview:_wkWebView];
     //    [self.view addSubview:_wkWebView];
 }
+// 键盘处理
+-(void)addNotiOfKeybod{
+    // 01  处理键盘
+    NSNotificationCenter* center =[NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(keyBoardShow) name:UIKeyboardWillShowNotification object:nil];
+    //  02  点击空白，键盘消失
+    //    UITapGestureRecognizer* singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureRecv:)];
+    //    [self.view addGestureRecognizer:singleTap];//这个可以加到任何控件上,比如你只想响应WebView，我正好填满整个屏幕
+    //    singleTap.delegate = self;
+    //    singleTap.cancelsTouchesInView = NO;
+    _wkWebView.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    //    _wkWebView.scrollView.delegate = self;
+}
+
+//  移除键盘上面的accessView
+-(void)keyBoardShow{
+    [self removeKeyboard];
+}
+
+-(void) removeKeyboard {
+    UIWindow *keyboardWindow = nil;
+    for (UIWindow *testWindow in [[UIApplication sharedApplication] windows]) {
+        if (![[testWindow class] isEqual : [UIWindow class]]) {
+            keyboardWindow = testWindow;
+            break;
+        }
+    }
+    // Locate UIWebFormView.
+    for (UIView *possibleFormView in [keyboardWindow subviews]) {
+        
+        if ([[possibleFormView description] hasPrefix : @"<UIInputSetContainerView"]) {
+            for (UIView* peripheralView in possibleFormView.subviews) {
+                
+                for (UIView* peripheralView_sub in peripheralView.subviews) {
+                    
+                    
+                    // hides the backdrop (iOS 8)
+                    if ([[peripheralView_sub description] hasPrefix : @"<UIKBInputBackdropView"] && peripheralView_sub.frame.size.height == 44) {
+                        [[peripheralView_sub layer] setOpacity : 0.0];
+                        
+                    }
+                    // hides the accessory bar
+                    if ([[peripheralView_sub description] hasPrefix : @"<UIWebFormAccessory"]) {
+                        
+                        
+                        for (UIView* UIInputViewContent_sub in peripheralView_sub.subviews) {
+                            
+                            CGRect frame1 = UIInputViewContent_sub.frame;
+                            frame1.size.height = 0;
+                            peripheralView_sub.frame = frame1;
+                            UIInputViewContent_sub.frame = frame1;
+                            [[peripheralView_sub layer] setOpacity : 0.0];
+                            
+                        }
+                        
+                        CGRect viewBounds = peripheralView_sub.frame;
+                        viewBounds.size.height = 0;
+                        peripheralView_sub.frame = viewBounds;
+                        
+                    }
+                }
+                
+            }
+        }
+    }
+    
+}
+//  设置点击分享后的覆盖视图
+-(void)setCover
+{
+    // 弹出蒙版
+    self.seleView = [[UIView alloc]initWithFrame:[UIScreen mainScreen].bounds];
+    self.seleView.backgroundColor = [UIColor blackColor];
+    self.seleView.alpha = 0;
+    UITapGestureRecognizer* gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gestureRecv)];
+    [self.seleView addGestureRecognizer:gesture];
+    self.seleView.y = [UIScreen mainScreen].bounds.size.height;
+    [self.view addSubview:self.seleView];
+    
+    // 添加分享对象
+    JudgeViewType logType;
+    logType = 0;
+    self.seleObj = [JudgeLogView  instanceJudgeViewStyle:logType];
+    //    self.seleObj.width = 20;
+    self.seleObj.delegate = self;
+//    self.seleObj.alpha = 0;
+    self.seleObj.center = self.view.center;
+    self.seleObj.y = [UIScreen mainScreen].bounds.size.height;
+    [self.view addSubview:self.seleObj];
+    
+}
 
 #pragma mark -- return click
 -(void)returnClick:(UIButton*)returnBtn{
@@ -133,19 +256,83 @@
 #pragma mark 弹出分享界面
 -(void)shareRequest:(UIButton*)shareBtn
 {
-
+    //    0 蒙版走起
+    self.seleView.y = 0;
+    self.seleView.alpha = 0.1;
+    //1 弹出SeleObjView
+    SeleObjView* sele = self.seleObjView;
+    //    sele.x = CGRectGetMaxX(shareBtn.frame) + sele.width;
+    //    sele.y = CGRectGetMaxY(shareBtn.frame);
+    sele.x = CGRectGetMaxX(shareBtn.frame) - sele.width;
+    sele.y = CGRectGetMaxY(shareBtn.frame);
+    sele.delegate = self;
+    [self.view addSubview:sele];
+    // 若果要分享，利用UIWebview 来获取网页title，description等信息
+    //    self.seleView.y = 0;
+    //    self.seleView.alpha = 0.5;
+    //    [self.seleView addSubview:sele];
 }
-// delegate of  webview
--(void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler{
+//  点击 More 弹出的view
+
+-(void)seleObjViewWithTag:(int)tag{
+        // 点击蒙版和SeleObjView消失
+        [self coverDismiss];
+    // 判断点击的是哪个按钮
+        if (tag == 2) {
+            [self setCompArr];
+            [UIView animateWithDuration:0.3 animations:^{
+                self.seleView.y = 0;
+                self.seleObj.center = self.view.center;
+            }];
+            [UIView animateWithDuration:0.3 animations:^{
+                self.seleView.alpha =0.8;
+                
+            }];
+            [UIView animateWithDuration:0.5 animations:^{
+                
+                self.seleObj.alpha =1;
+            }];
+            
+        }
+    }
+// 点击 qq 或 微信 分享
+-(void)changeScene:(int)scene{
     
-    decisionHandler(WKNavigationResponsePolicyAllow);
 }
--(void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation{
 
+-(void)qqShareSele:(int)tag{
 
 }
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+
+// delegate of  webview
+-(void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler{
+//
+    NSString* strHtml = navigationAction.request.URL.absoluteString;
+    _clickedUrl = strHtml;
+    
+    decisionHandler(WKNavigationActionPolicyAllow);
+}
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation{
+    if (_clickedUrl) {
+        [self.leftNaviItem setHidden:NO];
+    }
+}
+
+// 点击蒙版,消失
+-(void)gestureRecv{
+    [self coverDismiss];
+}
+-(void)coverDismiss{
+    [self.seleObjView removeFromSuperview];
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        self.seleView.y = [UIScreen mainScreen].bounds.size.height;
+        self.seleObj.y = self.view.height;
+    }];
+    [UIView animateWithDuration:0.3 animations:^{
+        self.seleView.alpha =0;
+        self.seleObj.alpha =0;
+    }];
 }
 @end

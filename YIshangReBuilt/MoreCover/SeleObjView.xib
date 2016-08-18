@@ -87,7 +87,7 @@
                 </imageView>
             </subviews>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-60" y="-169"/>
+            <point key="canvasLocation" x="-101" y="-170"/>
         </view>
         <view contentMode="scaleToFill" id="sB6-9s-6l2">
             <rect key="frame" x="0.0" y="0.0" width="90" height="40"/>

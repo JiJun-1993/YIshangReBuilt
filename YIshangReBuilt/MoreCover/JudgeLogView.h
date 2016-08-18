@@ -15,7 +15,6 @@ typedef NS_ENUM(NSInteger, JudgeViewType) {
 
 @class JudgeLogView;
 @protocol JudgeLogViewDelegate <NSObject>
-@required
 -(void)changeScene:(int)scene;
 -(void)qqShareSele:(int)tag;
 @end
