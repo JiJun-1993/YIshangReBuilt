@@ -11,8 +11,11 @@
 // qq  和 微信分享
 #import <ShareSDK/ShareSDK.h>
 #import <ShareSDKUI/ShareSDK+SSUI.h>
+//  qq 和微信登录
+#import <ShareSDKExtension/SSEThirdPartyLoginHelper.h>
+#define QQLoginUrl(openId,access_token)  [NSString stringWithFormat:@"http://www.vipysw.com/mobile/index.php?app=qqyswconnect&act=callback&openid=%@&access_token=%@",openId,access_token]
 
-
+#define WxreqWithCode(code) [NSString stringWithFormat:@"http://www.vipysw.com/mobile/index.php?app=wxyswconnect&act=callback&code=%@",code]
 
 #define screenBounds [UIScreen mainScreen].bounds
 #define NaviHeight 55
@@ -351,10 +354,19 @@
     [self.leftNaviItem setHidden:NO];
     }
     NSString* strHtml = navigationAction.request.URL.absoluteString;
-    
-    
     _clickedUrl = strHtml;
     
+    
+    if([strHtml rangeOfString:WxLoginClick].location != NSNotFound){
+        [self loginWx];
+//        [_coverView removeFromSuperview];
+    }
+    if([strHtml rangeOfString:QQloginClick].location != NSNotFound)//_roaldSearchTdecidePolicyForNavigationActionext
+    {
+        [self loginQQ];
+//        [_coverView removeFromSuperview];
+    }
+
     decisionHandler(WKNavigationActionPolicyAllow);
 }
 
@@ -368,6 +380,54 @@
     if ([error code] == NSURLErrorCancelled) {
         return;
     }
+}
+#pragma  mark  登录
+-(void)loginQQ{
+    [ShareSDK getUserInfo:SSDKPlatformTypeQQ
+           onStateChanged:^(SSDKResponseState state, SSDKUser *user, NSError *error)
+     {
+         if (state == SSDKResponseStateSuccess)
+         {
+             
+//             NSLog(@"uid=%@",user.uid);
+//             NSLog(@"%@",user.credential);
+//             NSLog(@"token=%@",user.credential.token);
+//             NSLog(@"nickname=%@",user.nickname);
+            NSURL* url = [NSURL URLWithString: QQLoginUrl(user.uid, user.credential.token)];
+             NSURLRequest* request = [NSURLRequest requestWithURL:url];
+             [_wkWebView loadRequest:request];
+             
+         }
+         
+         else
+         {
+             NSLog(@"%@",error);
+         }
+         
+     }];
+    
+}
+-(void)loginWx{
+    [ShareSDK getUserInfo:SSDKPlatformTypeWechat
+           onStateChanged:^(SSDKResponseState state, SSDKUser *user, NSError *error)
+     {
+         
+         if (state == SSDKResponseStateSuccess)
+         {
+             NSLog(@"uid=%@",user.uid);
+             NSLog(@"%@",user.credential);
+             NSLog(@"token=%@",user.credential.token);
+             NSLog(@"nickname=%@",user.nickname);
+             
+             NSURL* url = [NSURL URLWithString:WxreqWithCode(user.credential.token)];
+             NSURLRequest* request = [NSURLRequest requestWithURL:url];
+             [_wkWebView loadRequest:request];
+         }
+         else
+         {
+             NSLog(@"%@",error);
+         }
+     }];
 }
 // 点击蒙版,消失
 -(void)gestureRecv{

@@ -14,7 +14,11 @@
 #import <ShareSDK/ShareSDK.h>
 #import <TencentOpenAPI/QQApiInterface.h>
 #import <TencentOpenAPI/TencentOAuth.h>
+#define QQloginClick  @"graph.qq.com"
+static NSString *WxLoginClick = @"open.weixin";
 #import "WXApi.h"
+//   登录
+//#import <AGCommon/CoreDefinition.h>
 
 // Include any system framework and library headers here that should be included in all compilation units.
 // You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
