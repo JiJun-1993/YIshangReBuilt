@@ -317,6 +317,7 @@
     if (_clickedUrl) {
         [self.leftNaviItem setHidden:NO];
     }
+    
 }
 
 // 点击蒙版,消失
