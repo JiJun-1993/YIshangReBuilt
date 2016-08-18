@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import <ShareSDK/SSDKPlatform.h>
+#import <ShareSDKConnector/ShareSDKConnector.h>
 
 @interface AppDelegate ()
 
@@ -17,6 +19,38 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    [ShareSDK registerApp:@"1571aeb3c27e8" activePlatforms:@[
+                                                @(SSDKPlatformTypeWechat),
+                                                             @(SSDKPlatformTypeQQ)]
+                                                    onImport:^(SSDKPlatformType platformType) {
+                                                        switch (platformType)
+                                                        {
+                                                            case SSDKPlatformTypeWechat:
+                                                                [ShareSDKConnector connectWeChat:[WXApi class]];
+                                                                break;
+                                                            case SSDKPlatformTypeQQ:
+                                                                [ShareSDKConnector connectQQ:[QQApiInterface class] tencentOAuthClass:[TencentOAuth class]];
+                                                                break;
+                                                            default:
+                                                                break;
+                                                        }
+    } onConfiguration:^(SSDKPlatformType platformType, NSMutableDictionary *appInfo) {
+        switch (platformType)
+        {
+            case SSDKPlatformTypeWechat:
+                [appInfo SSDKSetupWeChatByAppId:@"wx2677e1c8a520f187"
+                                      appSecret:@"53c08017c4ac6b9ff5184230b9408217"];
+                break;
+            case SSDKPlatformTypeQQ:
+                [appInfo SSDKSetupQQByAppId:@"101227504"
+                                     appKey:@"02eae420e660266458966976d75b9ecc"
+                                   authType:SSDKAuthTypeBoth];
+                break;
+            default:
+                break;
+        }
+    }];
+    
     return YES;
 }
 
