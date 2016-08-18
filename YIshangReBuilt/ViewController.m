@@ -40,7 +40,7 @@
 @property(strong,nonatomic)JudgeLogView* seleObj;
 //  记录网页信息
  @property(strong,nonatomic)NSArray* compArray;
-
+//  加载时候的蒙版
 
 @end
 
@@ -58,6 +58,7 @@
     [self addNotiOfKeybod];
     
     [self setCover];
+    
 }
 //懒加载
       // 懒加载SeleObjView
@@ -252,7 +253,6 @@
     [self.view addSubview:self.seleObj];
     
 }
-
 #pragma mark -- return click
 -(void)returnClick:(UIButton*)returnBtn{
     
@@ -264,83 +264,78 @@
 
 -(void)shareRequest:(UIButton*)shareBtn
 {
-//    //    0 蒙版走起
-//    self.seleView.y = 0;
-//    self.seleView.alpha = 0.1;
-//    //1 弹出SeleObjView
-//    SeleObjView* sele = self.seleObjView;
-//    //    sele.x = CGRectGetMaxX(shareBtn.frame) + sele.width;
-//    //    sele.y = CGRectGetMaxY(shareBtn.frame);
-//    sele.x = CGRectGetMaxX(shareBtn.frame) - sele.width;
-//    sele.y = CGRectGetMaxY(shareBtn.frame);
-//    sele.delegate = self;
-//    [self.view addSubview:sele];
-    
-    //构造分享内容
- 
-    NSArray* image = @[[UIImage imageNamed:@"1204"]];
-    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
-    [shareParams SSDKSetupShareParamsByText:@"分享内容"
-                                     images:image
-                                        url:[NSURL URLWithString:HomeRequest]
-                                      title:@"分享标题"
-                                       type:SSDKContentTypeAuto];
-    //2、分享（可以弹出我们的分享菜单和编辑界面）
-    [ShareSDK showShareActionSheet:nil //要显示菜单的视图, iPad版中此参数作为弹出菜单的参照视图，只有传这个才可以弹出我们的分享菜单，可以传分享的按钮对象或者自己创建小的view 对象，iPhone可以传nil不会影响
-                             items:nil
-                       shareParams:shareParams
-               onShareStateChanged:^(SSDKResponseState state, SSDKPlatformType platformType, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error, BOOL end) {
-                   
-                   switch (state) {
-                       case SSDKResponseStateSuccess:
-                       {
-                           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享成功"
-                                                                               message:nil
-                                                                              delegate:nil
-                                                                     cancelButtonTitle:@"确定"
-                                                                     otherButtonTitles:nil];
-                           [alertView show];
-                           break;
-                       }
-                       case SSDKResponseStateFail:
-                       {
-                           UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"分享失败"
-                                                                           message:[NSString stringWithFormat:@"%@",error]
-                                                                          delegate:nil
-                                                                 cancelButtonTitle:@"OK"
-                                                                 otherButtonTitles:nil, nil];
-                           [alert show];
-                           break;
-                       }
-                       default:
-                           break;
-                   }
-               }
-     ];
+    //    0 蒙版走起
+    self.seleView.y = 0;
+    self.seleView.alpha = 0.1;
+    //1 弹出SeleObjView
+    SeleObjView* sele = self.seleObjView;
+    //    sele.x = CGRectGetMaxX(shareBtn.frame) + sele.width;
+    //    sele.y = CGRectGetMaxY(shareBtn.frame);
+    sele.x = CGRectGetMaxX(shareBtn.frame) - sele.width;
+    sele.y = CGRectGetMaxY(shareBtn.frame);
+    sele.delegate = self;
+    [self.view addSubview:sele];
 }
 //  点击 More 弹出的view
 
 -(void)seleObjViewWithTag:(int)tag{
         // 点击蒙版和SeleObjView消失
-        [self coverDismiss];
+    [self coverDismiss];
+     
+    NSString* shareTitle = @" ";
+    NSString* shareUrlStr = _compArray[1];
+    NSURL* sharUrl = [NSURL URLWithString:shareUrlStr];
+    NSString* shareImageUrlStr = _compArray[2];
+    NSURL* shareImageUrl = [NSURL URLWithString:shareImageUrlStr];
+    NSString* shareDcrp = _compArray[3];
     // 判断点击的是哪个按钮
         if (tag == 2) {
-            [self setCompArr];
-            [UIView animateWithDuration:0.3 animations:^{
-                self.seleView.y = 0;
-                self.seleObj.center = self.view.center;
-            }];
-            [UIView animateWithDuration:0.3 animations:^{
-                self.seleView.alpha =0.8;
-                
-            }];
-            [UIView animateWithDuration:0.5 animations:^{
-                
-                self.seleObj.alpha =1;
-            }];
+            NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
+//            [shareParams SSDKSetupWeChatParamsByText:shareDcrp title:shareTitle url:sharUrl thumbImage:shareImageUrl image:nil musicFileURL:nil extInfo:nil fileData:nil emoticonData:nil type:SSDKContentTypeWebPage forPlatformSubType:22];
+//
+//            [shareParams SSDKSetupQQParamsByText:shareDcrp title:shareTitle url:sharUrl thumbImage:shareImageUrl image:nil type:SSDKContentTypeWebPage forPlatformSubType:24];
+           
             
+            [shareParams SSDKSetupShareParamsByText:shareTitle
+                                             images:shareImageUrl
+                                                url:sharUrl
+                                              title:shareDcrp
+                                               type:SSDKContentTypeWebPage];
+           
+            //2、分享（可以弹出我们的分享菜单和编辑界面）
+            [ShareSDK showShareActionSheet:nil //要显示菜单的视图, iPad版中此参数作为弹出菜单的参照视图，只有传这个才可以弹出我们的分享菜单，可以传分享的按钮对象或者自己创建小的view 对象，iPhone可以传nil不会影响
+                                     items:nil
+                               shareParams:shareParams
+                       onShareStateChanged:^(SSDKResponseState state, SSDKPlatformType platformType, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error, BOOL end) {
+                           
+                           switch (state) {
+                               case SSDKResponseStateSuccess:
+                               {
+                                   UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享成功"
+                                                                                       message:nil
+                                                                                      delegate:nil
+                                                                             cancelButtonTitle:@"确定"
+                                                                             otherButtonTitles:nil];
+                                   [alertView show];
+                                   break;
+                               }
+                               case SSDKResponseStateFail:
+                               {
+                                   UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"分享失败"
+                                                                                   message:[NSString stringWithFormat:@"%@",error]
+                                                                                  delegate:nil
+                                                                         cancelButtonTitle:@"OK"
+                                                                         otherButtonTitles:nil, nil];
+                                   [alert show];
+                                   break;
+                               }
+                               default:
+                                   break;
+                           }
+                       }
+             ];
         }
-    }
+}
 // 点击 qq 或 微信 分享
 -(void)changeScene:(int)scene{
     
@@ -350,22 +345,30 @@
 
 }
 
-// delegate of  webview
+#pragma mark delegate of  webview
 -(void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler{
-//
+    if (_clickedUrl) {
+    [self.leftNaviItem setHidden:NO];
+    }
     NSString* strHtml = navigationAction.request.URL.absoluteString;
+    
+    
     _clickedUrl = strHtml;
     
     decisionHandler(WKNavigationActionPolicyAllow);
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation{
-    if (_clickedUrl) {
-        [self.leftNaviItem setHidden:NO];
-    }
-    
+   
+    [self setCompArr];
 }
-
+- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error{
+    [_wkWebView stopLoading];
+    //    NSLog(@"didFailProvisionalNavigation error%@",error);
+    if ([error code] == NSURLErrorCancelled) {
+        return;
+    }
+}
 // 点击蒙版,消失
 -(void)gestureRecv{
     [self coverDismiss];

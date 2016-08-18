@@ -35,7 +35,6 @@
 		04222B611D64613800AF7CB4 /* PinkSele.png in Resources */ = {isa = PBXBuildFile; fileRef = 04222B481D64613800AF7CB4 /* PinkSele.png */; };
 		04222B621D64613800AF7CB4 /* return.png in Resources */ = {isa = PBXBuildFile; fileRef = 04222B491D64613800AF7CB4 /* return.png */; };
 		04222B631D64613800AF7CB4 /* return2.png in Resources */ = {isa = PBXBuildFile; fileRef = 04222B4A1D64613800AF7CB4 /* return2.png */; };
-		04222B641D64613800AF7CB4 /* Home.png in Resources */ = {isa = PBXBuildFile; fileRef = 04222B4C1D64613800AF7CB4 /* Home.png */; };
 		04222B651D64613800AF7CB4 /* Info.png in Resources */ = {isa = PBXBuildFile; fileRef = 04222B4D1D64613800AF7CB4 /* Info.png */; };
 		04222B661D64613800AF7CB4 /* More.png in Resources */ = {isa = PBXBuildFile; fileRef = 04222B4E1D64613800AF7CB4 /* More.png */; };
 		04222B671D64613800AF7CB4 /* Share.png in Resources */ = {isa = PBXBuildFile; fileRef = 04222B4F1D64613800AF7CB4 /* Share.png */; };
@@ -67,6 +66,7 @@
 		04222BB41D65534700AF7CB4 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04222BB31D65534700AF7CB4 /* JavaScriptCore.framework */; };
 		04222BB61D65535800AF7CB4 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 04222BB51D65535800AF7CB4 /* libsqlite3.tbd */; };
 		04222BB91D655B5B00AF7CB4 /* 1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 04222BB81D655B5B00AF7CB4 /* 1024.png */; };
+		04222BBB1D65993F00AF7CB4 /* homes.png in Resources */ = {isa = PBXBuildFile; fileRef = 04222BBA1D65993F00AF7CB4 /* homes.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -125,7 +125,6 @@
 		04222B481D64613800AF7CB4 /* PinkSele.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PinkSele.png; sourceTree = "<group>"; };
 		04222B491D64613800AF7CB4 /* return.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = return.png; sourceTree = "<group>"; };
 		04222B4A1D64613800AF7CB4 /* return2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = return2.png; sourceTree = "<group>"; };
-		04222B4C1D64613800AF7CB4 /* Home.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Home.png; sourceTree = "<group>"; };
 		04222B4D1D64613800AF7CB4 /* Info.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Info.png; sourceTree = "<group>"; };
 		04222B4E1D64613800AF7CB4 /* More.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = More.png; sourceTree = "<group>"; };
 		04222B4F1D64613800AF7CB4 /* Share.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Share.png; sourceTree = "<group>"; };
@@ -174,6 +173,7 @@
 		04222BB31D65534700AF7CB4 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		04222BB51D65535800AF7CB4 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		04222BB81D655B5B00AF7CB4 /* 1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1024.png; sourceTree = "<group>"; };
+		04222BBA1D65993F00AF7CB4 /* homes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homes.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -420,7 +420,7 @@
 		04222B4B1D64613800AF7CB4 /* SeleImage */ = {
 			isa = PBXGroup;
 			children = (
-				04222B4C1D64613800AF7CB4 /* Home.png */,
+				04222BBA1D65993F00AF7CB4 /* homes.png */,
 				04222B4D1D64613800AF7CB4 /* Info.png */,
 				04222B4E1D64613800AF7CB4 /* More.png */,
 				04222B4F1D64613800AF7CB4 /* Share.png */,
@@ -656,7 +656,6 @@
 				04222B571D64613800AF7CB4 /* HomeSele.png in Resources */,
 				04222B691D64613800AF7CB4 /* Yishang.png in Resources */,
 				04222B7A1D6461FD00AF7CB4 /* SeleObjView.xib in Resources */,
-				04222B641D64613800AF7CB4 /* Home.png in Resources */,
 				04222B5A1D64613800AF7CB4 /* icon_invite_pengyou.png in Resources */,
 				04222B661D64613800AF7CB4 /* More.png in Resources */,
 				04222B521D64613800AF7CB4 /* 456.png in Resources */,
@@ -680,6 +679,7 @@
 				04222B5E1D64613800AF7CB4 /* Mem.png in Resources */,
 				04222B651D64613800AF7CB4 /* Info.png in Resources */,
 				040FDDD51D4E3824001B1B6C /* Assets.xcassets in Resources */,
+				04222BBB1D65993F00AF7CB4 /* homes.png in Resources */,
 				04222B671D64613800AF7CB4 /* Share.png in Resources */,
 				04222B5B1D64613800AF7CB4 /* icon_invite_qq.png in Resources */,
 				04222B541D64613800AF7CB4 /* CartSele.png in Resources */,
@@ -875,6 +875,7 @@
 					"$(PROJECT_DIR)/YIshangReBuilt/ShareSDK/Support/PlatformSDK/SinaWeiboSDK",
 					"$(PROJECT_DIR)/YIshangReBuilt/ShareSDK/Support/PlatformSDK/WeChatSDK",
 				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jijun.YishangAppID;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -900,6 +901,7 @@
 					"$(PROJECT_DIR)/YIshangReBuilt/ShareSDK/Support/PlatformSDK/SinaWeiboSDK",
 					"$(PROJECT_DIR)/YIshangReBuilt/ShareSDK/Support/PlatformSDK/WeChatSDK",
 				);
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jijun.YishangAppID;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

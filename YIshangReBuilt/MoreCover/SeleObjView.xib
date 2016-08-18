@@ -52,7 +52,7 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="Home.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZnK-vL-iqm">
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="homes.png" translatesAutoresizingMaskIntoConstraints="NO" id="ZnK-vL-iqm">
                     <rect key="frame" x="8" y="46" width="28" height="28"/>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sP1-sz-eST">
@@ -87,7 +87,7 @@
                 </imageView>
             </subviews>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="-101" y="-170"/>
+            <point key="canvasLocation" x="-313" y="-175"/>
         </view>
         <view contentMode="scaleToFill" id="sB6-9s-6l2">
             <rect key="frame" x="0.0" y="0.0" width="90" height="40"/>
@@ -98,8 +98,8 @@
         </view>
     </objects>
     <resources>
-        <image name="Home.png" width="35" height="35"/>
         <image name="Info.png" width="40" height="40"/>
         <image name="Share.png" width="40" height="40"/>
+        <image name="homes.png" width="40" height="40"/>
     </resources>
 </document>
