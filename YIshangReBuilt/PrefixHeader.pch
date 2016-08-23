@@ -10,13 +10,18 @@
 #define PrefixHeader_pch
 
 #import "UIView+Frame.h"
-
+#import "NSURLRequest+WithString.h"
+// 微信
 #import <ShareSDK/ShareSDK.h>
 #import <TencentOpenAPI/QQApiInterface.h>
 #import <TencentOpenAPI/TencentOAuth.h>
 #define QQloginClick  @"graph.qq.com"
 static NSString *WxLoginClick = @"open.weixin";
 #import "WXApi.h"
+
+//  原生
+#import "WXApiManager.h"
+#define QQAppId @"101227504"
 //   登录
 //#import <AGCommon/CoreDefinition.h>
 

@@ -10,6 +10,7 @@
 #import <ShareSDK/SSDKPlatform.h>
 #import <ShareSDKConnector/ShareSDKConnector.h>
 
+
 @interface AppDelegate ()
 
 @end
@@ -50,18 +51,36 @@
                 break;
         }
     }];
+    // ------------------------ 原生
     
+     [WXApi registerApp:@"wx2677e1c8a520f187"];
     return YES;
 }
+//  微信原生登录
+- (BOOL)application:(UIApplication *)app openURL:(NSURL *)url options:(NSDictionary<NSString*, id> *)options
+{
+//    return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]]||[TencentOAuth HandleOpenURL:url];
+    
+    //微信原生登录
+    return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
 
-//-(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url{
+}
+-(BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url{
 //    return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]]||[TencentOAuth HandleOpenURL:url];
-//}
-//-(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{
+    
+    //微信原生登录
+    return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
+
+}
+-(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation{
 //    return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]]||[TencentOAuth HandleOpenURL:url];
-//    
-//    //     [TencentOAuth HandleOpenURL:url]
-//}
+   
+    //微信原生登录
+    return [WXApi handleOpenURL:url delegate:[WXApiManager sharedManager]];
+
+    
+    //     [TencentOAuth HandleOpenURL:url]
+}
 
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

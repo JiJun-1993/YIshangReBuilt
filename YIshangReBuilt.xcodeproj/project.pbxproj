@@ -54,6 +54,13 @@
 		04222BB61D65535800AF7CB4 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 04222BB51D65535800AF7CB4 /* libsqlite3.tbd */; };
 		04222BB91D655B5B00AF7CB4 /* 1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 04222BB81D655B5B00AF7CB4 /* 1024.png */; };
 		04222BBB1D65993F00AF7CB4 /* homes.png in Resources */ = {isa = PBXBuildFile; fileRef = 04222BBA1D65993F00AF7CB4 /* homes.png */; };
+		045F2DDD1D6B05FE0010FD6E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045F2DDC1D6B05FE0010FD6E /* Security.framework */; };
+		045F2DDF1D6B060A0010FD6E /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 045F2DDE1D6B060A0010FD6E /* libiconv.tbd */; };
+		045F2DE11D6B06100010FD6E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045F2DE01D6B06100010FD6E /* SystemConfiguration.framework */; };
+		045F2DE31D6B06180010FD6E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045F2DE21D6B06180010FD6E /* CoreGraphics.framework */; };
+		045F2FEC1D6B129C0010FD6E /* WXApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 045F2FEB1D6B129C0010FD6E /* WXApiManager.m */; };
+		045F2FF01D6B140F0010FD6E /* NSURLRequest+WithString.m in Sources */ = {isa = PBXBuildFile; fileRef = 045F2FEF1D6B140F0010FD6E /* NSURLRequest+WithString.m */; };
+		045F2FF21D6B2C0F0010FD6E /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 045F2FF11D6B2C0F0010FD6E /* libsqlite3.0.tbd */; };
 		04D49CBF1D65ADB3007561A6 /* ShareSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04D49CAB1D65ADB3007561A6 /* ShareSDK.framework */; };
 		04D49CC01D65ADB3007561A6 /* ShareSDKExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04D49CAE1D65ADB3007561A6 /* ShareSDKExtension.framework */; };
 		04D49CC11D65ADB3007561A6 /* ShareSDKUI.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 04D49CAF1D65ADB3007561A6 /* ShareSDKUI.bundle */; };
@@ -145,6 +152,15 @@
 		04222BB51D65535800AF7CB4 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		04222BB81D655B5B00AF7CB4 /* 1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1024.png; sourceTree = "<group>"; };
 		04222BBA1D65993F00AF7CB4 /* homes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homes.png; sourceTree = "<group>"; };
+		045F2DDC1D6B05FE0010FD6E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		045F2DDE1D6B060A0010FD6E /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		045F2DE01D6B06100010FD6E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		045F2DE21D6B06180010FD6E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		045F2FEA1D6B129C0010FD6E /* WXApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXApiManager.h; sourceTree = "<group>"; };
+		045F2FEB1D6B129C0010FD6E /* WXApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXApiManager.m; sourceTree = "<group>"; };
+		045F2FEE1D6B140F0010FD6E /* NSURLRequest+WithString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLRequest+WithString.h"; sourceTree = "<group>"; };
+		045F2FEF1D6B140F0010FD6E /* NSURLRequest+WithString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLRequest+WithString.m"; sourceTree = "<group>"; };
+		045F2FF11D6B2C0F0010FD6E /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		04D49CAB1D65ADB3007561A6 /* ShareSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDK.framework; sourceTree = "<group>"; };
 		04D49CAE1D65ADB3007561A6 /* ShareSDKExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKExtension.framework; sourceTree = "<group>"; };
 		04D49CAF1D65ADB3007561A6 /* ShareSDKUI.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareSDKUI.bundle; sourceTree = "<group>"; };
@@ -166,18 +182,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				045F2FF21D6B2C0F0010FD6E /* libsqlite3.0.tbd in Frameworks */,
+				04222BAE1D65532A00AF7CB4 /* libicucore.tbd in Frameworks */,
+				04222BB21D65534000AF7CB4 /* libstdc++.tbd in Frameworks */,
+				04222BB41D65534700AF7CB4 /* JavaScriptCore.framework in Frameworks */,
+				045F2DE31D6B06180010FD6E /* CoreGraphics.framework in Frameworks */,
+				045F2DE11D6B06100010FD6E /* SystemConfiguration.framework in Frameworks */,
+				045F2DDF1D6B060A0010FD6E /* libiconv.tbd in Frameworks */,
+				045F2DDD1D6B05FE0010FD6E /* Security.framework in Frameworks */,
 				04222BB61D65535800AF7CB4 /* libsqlite3.tbd in Frameworks */,
 				04D49CC71D65ADB3007561A6 /* MOBFoundation.framework in Frameworks */,
 				04D49CC31D65ADB3007561A6 /* TencentOpenAPI.framework in Frameworks */,
-				04222BB41D65534700AF7CB4 /* JavaScriptCore.framework in Frameworks */,
-				04222BB21D65534000AF7CB4 /* libstdc++.tbd in Frameworks */,
 				04D49CC51D65ADB3007561A6 /* libWeChatSDK.a in Frameworks */,
 				04D49CC21D65ADB3007561A6 /* ShareSDKUI.framework in Frameworks */,
 				04D49CC91D65ADB3007561A6 /* ShareSDKConnector.framework in Frameworks */,
 				04D49CBF1D65ADB3007561A6 /* ShareSDK.framework in Frameworks */,
 				04D49CC01D65ADB3007561A6 /* ShareSDKExtension.framework in Frameworks */,
 				04222BB01D65533700AF7CB4 /* libz.tbd in Frameworks */,
-				04222BAE1D65532A00AF7CB4 /* libicucore.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,14 +222,13 @@
 		040FDDB91D4E3823001B1B6C = {
 			isa = PBXGroup;
 			children = (
+				045F2DE41D6B08E30010FD6E /* FrameWorks */,
 				040FDDC81D4E3824001B1B6C /* AppDelegate.h */,
 				040FDDC91D4E3824001B1B6C /* AppDelegate.m */,
 				040FDDCB1D4E3824001B1B6C /* ViewController.h */,
 				040FDDCC1D4E3824001B1B6C /* ViewController.m */,
 				040FDDCE1D4E3824001B1B6C /* Main.storyboard */,
 				040FDE0B1D4E3C0C001B1B6C /* PrefixHeader.pch */,
-				04D49CAA1D65ADB3007561A6 /* ShareSDK */,
-				04222BB71D65539800AF7CB4 /* FrameWork */,
 				040FDDC41D4E3824001B1B6C /* YIshangReBuilt */,
 				040FDDE11D4E3824001B1B6C /* YIshangReBuiltTests */,
 				040FDDEC1D4E3824001B1B6C /* YIshangReBuiltUITests */,
@@ -325,6 +345,8 @@
 		040FDE021D4E398B001B1B6C /* WeixinLogin */ = {
 			isa = PBXGroup;
 			children = (
+				045F2FEA1D6B129C0010FD6E /* WXApiManager.h */,
+				045F2FEB1D6B129C0010FD6E /* WXApiManager.m */,
 			);
 			path = WeixinLogin;
 			sourceTree = "<group>";
@@ -359,6 +381,8 @@
 		040FDE071D4E3BC1001B1B6C /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				045F2FEE1D6B140F0010FD6E /* NSURLRequest+WithString.h */,
+				045F2FEF1D6B140F0010FD6E /* NSURLRequest+WithString.m */,
 				040FDE081D4E3BD7001B1B6C /* UIView+Frame.h */,
 				040FDE091D4E3BD7001B1B6C /* UIView+Frame.m */,
 			);
@@ -421,16 +445,30 @@
 			path = MoreCover;
 			sourceTree = "<group>";
 		};
-		04222BB71D65539800AF7CB4 /* FrameWork */ = {
+		045F2DE41D6B08E30010FD6E /* FrameWorks */ = {
 			isa = PBXGroup;
 			children = (
+				04D49CAA1D65ADB3007561A6 /* ShareSDK */,
 				04222BB51D65535800AF7CB4 /* libsqlite3.tbd */,
 				04222BB31D65534700AF7CB4 /* JavaScriptCore.framework */,
 				04222BB11D65534000AF7CB4 /* libstdc++.tbd */,
 				04222BAF1D65533700AF7CB4 /* libz.tbd */,
 				04222BAD1D65532A00AF7CB4 /* libicucore.tbd */,
+				045F2FED1D6B13910010FD6E /* ADDWxLogin */,
 			);
-			name = FrameWork;
+			path = FrameWorks;
+			sourceTree = "<group>";
+		};
+		045F2FED1D6B13910010FD6E /* ADDWxLogin */ = {
+			isa = PBXGroup;
+			children = (
+				045F2FF11D6B2C0F0010FD6E /* libsqlite3.0.tbd */,
+				045F2DE21D6B06180010FD6E /* CoreGraphics.framework */,
+				045F2DE01D6B06100010FD6E /* SystemConfiguration.framework */,
+				045F2DDE1D6B060A0010FD6E /* libiconv.tbd */,
+				045F2DDC1D6B05FE0010FD6E /* Security.framework */,
+			);
+			name = ADDWxLogin;
 			sourceTree = "<group>";
 		};
 		04D49CAA1D65ADB3007561A6 /* ShareSDK */ = {
@@ -439,7 +477,8 @@
 				04D49CAB1D65ADB3007561A6 /* ShareSDK.framework */,
 				04D49CAC1D65ADB3007561A6 /* Support */,
 			);
-			path = ShareSDK;
+			name = ShareSDK;
+			path = ../ShareSDK;
 			sourceTree = "<group>";
 		};
 		04D49CAC1D65ADB3007561A6 /* Support */ = {
@@ -587,6 +626,7 @@
 			knownRegions = (
 				en,
 				Base,
+				"zh-Hans",
 			);
 			mainGroup = 040FDDB91D4E3823001B1B6C;
 			productRefGroup = 040FDDC31D4E3824001B1B6C /* Products */;
@@ -666,8 +706,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				040FDDCD1D4E3824001B1B6C /* ViewController.m in Sources */,
+				045F2FF01D6B140F0010FD6E /* NSURLRequest+WithString.m in Sources */,
 				04222B751D6461FD00AF7CB4 /* JudgeLogView.m in Sources */,
 				040FDDD31D4E3824001B1B6C /* YIshangReBuilt.xcdatamodeld in Sources */,
+				045F2FEC1D6B129C0010FD6E /* WXApiManager.m in Sources */,
 				040FDDCA1D4E3824001B1B6C /* AppDelegate.m in Sources */,
 				04222B771D6461FD00AF7CB4 /* QQCover.m in Sources */,
 				040FDE0A1D4E3BD7001B1B6C /* UIView+Frame.m in Sources */,
@@ -824,6 +866,10 @@
 					"$(PROJECT_DIR)/ShareSDK/Support/Optional",
 					"$(PROJECT_DIR)/ShareSDK/Support/PlatformSDK/QQSDK",
 					"$(PROJECT_DIR)/ShareSDK/Support/Required",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Facebook",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Renren",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Twitter",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = /Users/mac/Desktop/YishangReBuild/YIshangReBuilt/YIshangReBuilt/PrefixHeader.pch;
@@ -834,6 +880,22 @@
 					"$(PROJECT_DIR)/YIshangReBuilt/ShareSDK/Support/PlatformSDK/SinaWeiboSDK",
 					"$(PROJECT_DIR)/YIshangReBuilt/ShareSDK/Support/PlatformSDK/WeChatSDK",
 					"$(PROJECT_DIR)/ShareSDK/Support/PlatformSDK/WeChatSDK",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_5.2.1",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/AlipayShare",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Facebook",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Instagram",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/LaiWang",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Line",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Renren",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/SinaSSO",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Tumblr",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Twitter",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/UMSocial_ScreenShot_Sdk",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/UMSocial_Shake_Sdk",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Wechat",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Whatsapp",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/YiXin",
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jijun.YishangAppID;
@@ -855,6 +917,10 @@
 					"$(PROJECT_DIR)/ShareSDK/Support/Optional",
 					"$(PROJECT_DIR)/ShareSDK/Support/PlatformSDK/QQSDK",
 					"$(PROJECT_DIR)/ShareSDK/Support/Required",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Facebook",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Renren",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Twitter",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = /Users/mac/Desktop/YishangReBuild/YIshangReBuilt/YIshangReBuilt/PrefixHeader.pch;
@@ -865,6 +931,22 @@
 					"$(PROJECT_DIR)/YIshangReBuilt/ShareSDK/Support/PlatformSDK/SinaWeiboSDK",
 					"$(PROJECT_DIR)/YIshangReBuilt/ShareSDK/Support/PlatformSDK/WeChatSDK",
 					"$(PROJECT_DIR)/ShareSDK/Support/PlatformSDK/WeChatSDK",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_5.2.1",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/AlipayShare",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Facebook",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Instagram",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/LaiWang",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Line",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Renren",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/SinaSSO",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/TencentOpenAPI",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Tumblr",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Twitter",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/UMSocial_ScreenShot_Sdk",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/UMSocial_Shake_Sdk",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Wechat",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/Whatsapp",
+					"$(PROJECT_DIR)/FrameWorks/UMSocial_Sdk_Extra_Frameworks/YiXin",
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jijun.YishangAppID;

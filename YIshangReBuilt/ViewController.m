@@ -12,10 +12,23 @@
 #import <ShareSDK/ShareSDK.h>
 #import <ShareSDKUI/ShareSDK+SSUI.h>
 //  qq 和微信登录
+//------------------原生
+// 判断微信已经安装
+#define WeixinIsINstalled [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"wechat://"]]
+static NSString *AuthScope = @"snsapi_userinfo";
+static NSString *AuthOpenID = @"wx2677e1c8a520f187";
+static NSString *AuthSecret  =@"53c08017c4ac6b9ff5184230b9408217";
+static NSString *AuthState = @"lct_ibestry_vipysw_login";
+#import "WXApiManager.h"
+#define MembCenter @"app=member"
+//------------------
+//#import "UMSocialQQHandler.h"
 #import <ShareSDKExtension/SSEThirdPartyLoginHelper.h>
 #define QQLoginUrl(openId,access_token)  [NSString stringWithFormat:@"http://www.vipysw.com/mobile/index.php?app=qqyswconnect&act=callback&openid=%@&access_token=%@",openId,access_token]
 
 #define WxreqWithCode(code) [NSString stringWithFormat:@"http://www.vipysw.com/mobile/index.php?app=wxyswconnect&act=callback&code=%@",code]
+
+
 
 #define screenBounds [UIScreen mainScreen].bounds
 #define NaviHeight 55
@@ -26,7 +39,7 @@
 
 #import "SeleObjView.h"
 #import "JudgeLogView.h"
-@interface ViewController ()<WKNavigationDelegate,JudgeLogViewDelegate,SeleObjViewDelegate>
+@interface ViewController ()<WKNavigationDelegate,JudgeLogViewDelegate,SeleObjViewDelegate,WXApiManagerDelegate>
 @property(nonatomic,strong)WKWebView* wkWebView;
 
 //@property (weak, nonatomic) IBOutlet UIWebView *wkWebView;
@@ -152,6 +165,9 @@
     _wkWebView.width = screenBounds.size.width;
     _wkWebView.height = (screenBounds.size.height - self.naviView.height);
     _wkWebView.navigationDelegate = self;
+    
+    // 03 本来ShareSDK好好的，微信登录出故障了，只能再加这一步
+    [WXApiManager sharedManager].delegate = self;
 }
 //  加载主页
 // webview 首次加载
@@ -342,6 +358,7 @@
 // 点击 qq 或 微信 分享
 -(void)changeScene:(int)scene{
     
+    
 }
 
 -(void)qqShareSele:(int)tag{
@@ -369,6 +386,16 @@
 
     decisionHandler(WKNavigationActionPolicyAllow);
 }
+//2 收到服务器响应头，根据navigationResponse 内容决定是否继续跳转
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler{
+    
+    if(([_clickedUrl rangeOfString:WxLoginClick].location != NSNotFound )|([_clickedUrl rangeOfString:QQloginClick].location != NSNotFound )){
+        decisionHandler(WKNavigationResponsePolicyCancel);
+        return;
+    }
+    decisionHandler(WKNavigationResponsePolicyAllow);
+}
+
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation{
    
@@ -383,6 +410,8 @@
 }
 #pragma  mark  登录
 -(void)loginQQ{
+//    [UMSocialQQHandler setQQWithAppId:@"101227504" appKey:@"02eae420e660266458966976d75b9ecc" url:HomeRequest];
+//
     [ShareSDK getUserInfo:SSDKPlatformTypeQQ
            onStateChanged:^(SSDKResponseState state, SSDKUser *user, NSError *error)
      {
@@ -405,30 +434,59 @@
          }
          
      }];
-    
+//
 }
 -(void)loginWx{
-    [ShareSDK getUserInfo:SSDKPlatformTypeWechat
-           onStateChanged:^(SSDKResponseState state, SSDKUser *user, NSError *error)
-     {
-         
-         if (state == SSDKResponseStateSuccess)
-         {
-             NSLog(@"uid=%@",user.uid);
-             NSLog(@"%@",user.credential);
-             NSLog(@"token=%@",user.credential.token);
-             NSLog(@"nickname=%@",user.nickname);
-             
-             NSURL* url = [NSURL URLWithString:WxreqWithCode(user.credential.token)];
-             NSURLRequest* request = [NSURLRequest requestWithURL:url];
-             [_wkWebView loadRequest:request];
-         }
-         else
-         {
-             NSLog(@"%@",error);
-         }
-     }];
+    
+    SendAuthReq* req = [[SendAuthReq alloc] init];
+    req.scope = AuthScope; // @"post_timeline,sns"
+    req.state = AuthState;
+    req.openID = AuthOpenID;
+    if (WeixinIsINstalled){
+        [WXApi sendReq:req];
+    }
+    else {
+        [WXApi sendAuthReq:req
+            viewController:self
+                  delegate:[WXApiManager sharedManager]];
+    }
+
+//    [ShareSDK getUserInfo:SSDKPlatformTypeWechat
+//           onStateChanged:^(SSDKResponseState state, SSDKUser *user, NSError *error)
+//     {
+//         
+//         if (state == SSDKResponseStateSuccess)
+//         {
+//             NSLog(@"uid=%@",user.uid);
+//             NSLog(@"%@",user.credential);
+//             NSLog(@"token=%@",user.credential.token);
+//             NSLog(@"nickname=%@",user.nickname);
+//             
+//             NSURL* url = [NSURL URLWithString:WxreqWithCode(user.credential.token)];
+//             NSURLRequest* request = [NSURLRequest requestWithURL:url];
+//             [_wkWebView loadRequest:request];
+//         }
+//         else
+//         {
+//             NSLog(@"%@",error);
+//         }
+//     }];
 }
+//  Delegate  of   WXManager
+// delegate of  WeixinLogin
+- (void)WxManagerDidRecvAuthResponse:(SendAuthResp *)response{
+    NSString* res = WxreqWithCode(response.code);
+    //    NSLog(@"code %@: ",res);
+    //    041sB2vp0NkBPc1ZcOwp0023vp0sB2vl
+    if (res) {
+        //        [self.webView loadRequest:[NSURLRequest requestWithString:res]];
+        [ _wkWebView loadRequest:[NSURLRequest requestWithString:res]];
+    }
+    else [_wkWebView loadRequest:[NSURLRequest requestWithString:MembCenter]];
+    
+    //    [self getTokenWithCode:response.code];
+}
+
 // 点击蒙版,消失
 -(void)gestureRecv{
     [self coverDismiss];
