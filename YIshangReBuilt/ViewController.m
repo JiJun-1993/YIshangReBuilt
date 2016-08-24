@@ -39,7 +39,7 @@ static NSString *AuthState = @"lct_ibestry_vipysw_login";
 
 #import "SeleObjView.h"
 #import "JudgeLogView.h"
-@interface ViewController ()<WKNavigationDelegate,JudgeLogViewDelegate,SeleObjViewDelegate,WXApiManagerDelegate>
+@interface ViewController ()<WKNavigationDelegate,JudgeLogViewDelegate,SeleObjViewDelegate,WXApiManagerDelegate,UIScrollViewDelegate>
 @property(nonatomic,strong)WKWebView* wkWebView;
 
 //@property (weak, nonatomic) IBOutlet UIWebView *wkWebView;
@@ -71,9 +71,13 @@ static NSString *AuthState = @"lct_ibestry_vipysw_login";
     
     [self setMainPage ];
     
-    [self addNotiOfKeybod];
+   
     
     [self setCover];
+    
+     [self setUserAgent];
+    // newVersionTest 获取新版本信息
+    [self newVersionTest];
     
 }
 //懒加载
@@ -187,20 +191,26 @@ static NSString *AuthState = @"lct_ibestry_vipysw_login";
     NSNotificationCenter* center =[NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(keyBoardShow) name:UIKeyboardWillShowNotification object:nil];
     //  02  点击空白，键盘消失
-    //    UITapGestureRecognizer* singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureRecv:)];
-    //    [self.view addGestureRecognizer:singleTap];//这个可以加到任何控件上,比如你只想响应WebView，我正好填满整个屏幕
+//        UITapGestureRecognizer* singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureRecv:)];
+//        [self.view addGestureRecognizer:singleTap];//这个可以加到任何控件上,比如你只想响应WebView，我正好填满整个屏幕
     //    singleTap.delegate = self;
     //    singleTap.cancelsTouchesInView = NO;
-    _wkWebView.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
-    //    _wkWebView.scrollView.delegate = self;
+//    self.wkWebView.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
+    
+        _wkWebView.scrollView.delegate = self;
 }
+//// webview滚动，键盘就消失
 
+-(void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    [self keyBdDismiss];
+
+}
+-(void)keyBdDismiss{
+//    [_wkWebView evaluateJavaScript:@"document.activeElement.blur();" completionHandler:nil];
+    [_wkWebView endEditing:YES];
+}
 //  移除键盘上面的accessView
 -(void)keyBoardShow{
-    [self removeKeyboard];
-}
-
--(void) removeKeyboard {
     UIWindow *keyboardWindow = nil;
     for (UIWindow *testWindow in [[UIApplication sharedApplication] windows]) {
         if (![[testWindow class] isEqual : [UIWindow class]]) {
@@ -246,6 +256,10 @@ static NSString *AuthState = @"lct_ibestry_vipysw_login";
             }
         }
     }
+
+}
+
+-(void) removeKeyboard {
     
 }
 //  设置点击分享后的覆盖视图
@@ -282,7 +296,8 @@ static NSString *AuthState = @"lct_ibestry_vipysw_login";
 
 
 -(void)shareRequest:(UIButton*)shareBtn
-{
+{   // 键盘消失
+    [self keyBdDismiss];
     //    0 蒙版走起
     self.seleView.y = 0;
     self.seleView.alpha = 0.1;
@@ -485,6 +500,95 @@ static NSString *AuthState = @"lct_ibestry_vipysw_login";
     else [_wkWebView loadRequest:[NSURLRequest requestWithString:MembCenter]];
     
     //    [self getTokenWithCode:response.code];
+}
+#pragma  mark  setUserAgent 
+-(void)setUserAgent{
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectZero
+                          ];
+    NSString *oldAgent = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+    
+    
+    //add my info to the new agent
+    NSString *newAgent = [NSString stringWithFormat:@"%@ vipysw_cmnetec_ios",oldAgent];
+    
+    [oldAgent stringByAppendingString:@" Jiecao/2.4.7 ch_appstore"];
+    
+    
+    //regist the new agent
+    NSDictionary *dictionnary = [[NSDictionary alloc] initWithObjectsAndKeys:newAgent, @"UserAgent", nil];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionnary];
+}
+
+#pragma mark  新版本提示更新
+// 新版本提示版
+-(void)newVersionTest{
+    
+    //    http://itunes.apple.com/lookup?id=1104919620
+    NSString* res = @"http://itunes.apple.com/lookup?id=1121880649";
+    NSURL* jsonUrl = [NSURL URLWithString:res];
+//    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:res]];
+    
+    
+     NSData *jsonData = [NSData dataWithContentsOfURL:jsonUrl];
+    //将请求的url数据放到NSData对象中
+
+    NSDictionary *weatherDic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingMutableLeaves error:nil];
+    
+    NSArray *infoArray = [weatherDic objectForKey:@"results"];
+    NSDictionary *releaseInfo = [infoArray objectAtIndex:0];
+    // 从返回的JSON数据中获取新版本号和下载地址
+    NSString *latestVersion = [releaseInfo objectForKey:@"version"];
+    // 网络版本
+    NSDictionary *infoDictionary = [[NSBundle mainBundle] infoDictionary];
+    NSString *currentVersion =  [infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    
+    NSString *trackViewUrl = [releaseInfo objectForKey:@"trackViewUrl"];
+    NSURLRequest* reqDdwnlod = [NSURLRequest requestWithString:trackViewUrl];
+    // 开启新线程加载下载页面
+    if(![latestVersion isEqualToString:currentVersion]){
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //回调或者说是通知主线程刷新，
+            [self addAlertNewVsion:reqDdwnlod];
+        });
+    }
+
+    
+//    NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    //IOS5自带解析类NSJSONSerialization从response中解析出数据放到字典中
+    }
+// 设置弹出框
+-(void)addAlertNewVsion:(NSURLRequest*)trackViewUrl{
+    
+    UIAlertController* alertVc = [UIAlertController alertControllerWithTitle:@"屹尚网新版本" message:@"请去AppStore里更新" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction* action1= [UIAlertAction actionWithTitle:@"知道了" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    
+//    UIAlertAction* action2= [UIAlertAction actionWithTitle:@"现在去" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+//        [self.wkWebView loadRequest:trackViewUrl];
+//    }];
+    
+    [alertVc addAction:action1];
+//    [alertVc addAction:action2];
+    [self presentViewController:alertVc animated:YES completion:^{
+        
+    }];
+}
+#pragma mark  预备和善后
+-(void)viewWillAppear:(BOOL)animated{
+    NSNotificationCenter* center =[NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(keyBoardShow) name:UIKeyboardWillShowNotification object:nil];
+    
+//    
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+// 善后
+-(void)viewWillDisappear:(BOOL)animated{
+    _wkWebView.navigationDelegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
 }
 
 // 点击蒙版,消失

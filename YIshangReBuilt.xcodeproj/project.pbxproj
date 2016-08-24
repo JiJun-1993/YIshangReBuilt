@@ -12,7 +12,6 @@
 		040FDDCD1D4E3824001B1B6C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 040FDDCC1D4E3824001B1B6C /* ViewController.m */; };
 		040FDDD01D4E3824001B1B6C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 040FDDCE1D4E3824001B1B6C /* Main.storyboard */; };
 		040FDDD31D4E3824001B1B6C /* YIshangReBuilt.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 040FDDD11D4E3824001B1B6C /* YIshangReBuilt.xcdatamodeld */; };
-		040FDDD51D4E3824001B1B6C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 040FDDD41D4E3824001B1B6C /* Assets.xcassets */; };
 		040FDDD81D4E3824001B1B6C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 040FDDD61D4E3824001B1B6C /* LaunchScreen.storyboard */; };
 		040FDDE31D4E3824001B1B6C /* YIshangReBuiltTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 040FDDE21D4E3824001B1B6C /* YIshangReBuiltTests.m */; };
 		040FDDEE1D4E3824001B1B6C /* YIshangReBuiltUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 040FDDED1D4E3824001B1B6C /* YIshangReBuiltUITests.m */; };
@@ -61,6 +60,7 @@
 		045F2FEC1D6B129C0010FD6E /* WXApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 045F2FEB1D6B129C0010FD6E /* WXApiManager.m */; };
 		045F2FF01D6B140F0010FD6E /* NSURLRequest+WithString.m in Sources */ = {isa = PBXBuildFile; fileRef = 045F2FEF1D6B140F0010FD6E /* NSURLRequest+WithString.m */; };
 		045F2FF21D6B2C0F0010FD6E /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 045F2FF11D6B2C0F0010FD6E /* libsqlite3.0.tbd */; };
+		045F307B1D6BD78E0010FD6E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 045F307A1D6BD78E0010FD6E /* Assets.xcassets */; };
 		04D49CBF1D65ADB3007561A6 /* ShareSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04D49CAB1D65ADB3007561A6 /* ShareSDK.framework */; };
 		04D49CC01D65ADB3007561A6 /* ShareSDKExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04D49CAE1D65ADB3007561A6 /* ShareSDKExtension.framework */; };
 		04D49CC11D65ADB3007561A6 /* ShareSDKUI.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 04D49CAF1D65ADB3007561A6 /* ShareSDKUI.bundle */; };
@@ -100,7 +100,6 @@
 		040FDDCC1D4E3824001B1B6C /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = YIshangReBuilt/ViewController.m; sourceTree = "<group>"; };
 		040FDDCF1D4E3824001B1B6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		040FDDD21D4E3824001B1B6C /* YIshangReBuilt.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = YIshangReBuilt.xcdatamodel; sourceTree = "<group>"; };
-		040FDDD41D4E3824001B1B6C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		040FDDD71D4E3824001B1B6C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		040FDDD91D4E3824001B1B6C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		040FDDDE1D4E3824001B1B6C /* YIshangReBuiltTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = YIshangReBuiltTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -161,6 +160,7 @@
 		045F2FEE1D6B140F0010FD6E /* NSURLRequest+WithString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURLRequest+WithString.h"; sourceTree = "<group>"; };
 		045F2FEF1D6B140F0010FD6E /* NSURLRequest+WithString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLRequest+WithString.m"; sourceTree = "<group>"; };
 		045F2FF11D6B2C0F0010FD6E /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		045F307A1D6BD78E0010FD6E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		04D49CAB1D65ADB3007561A6 /* ShareSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDK.framework; sourceTree = "<group>"; };
 		04D49CAE1D65ADB3007561A6 /* ShareSDKExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKExtension.framework; sourceTree = "<group>"; };
 		04D49CAF1D65ADB3007561A6 /* ShareSDKUI.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareSDKUI.bundle; sourceTree = "<group>"; };
@@ -369,7 +369,7 @@
 		040FDE061D4E39E1001B1B6C /* ProjectRelated     */ = {
 			isa = PBXGroup;
 			children = (
-				040FDDD41D4E3824001B1B6C /* Assets.xcassets */,
+				045F307A1D6BD78E0010FD6E /* Assets.xcassets */,
 				04222BB81D655B5B00AF7CB4 /* 1024.png */,
 				040FDDD61D4E3824001B1B6C /* LaunchScreen.storyboard */,
 				040FDDD91D4E3824001B1B6C /* Info.plist */,
@@ -672,7 +672,6 @@
 				04222B5D1D64613800AF7CB4 /* icon_invite_weixin.png in Resources */,
 				04222B5E1D64613800AF7CB4 /* Mem.png in Resources */,
 				04222B651D64613800AF7CB4 /* Info.png in Resources */,
-				040FDDD51D4E3824001B1B6C /* Assets.xcassets in Resources */,
 				04222BBB1D65993F00AF7CB4 /* homes.png in Resources */,
 				04222B671D64613800AF7CB4 /* Share.png in Resources */,
 				04222B5B1D64613800AF7CB4 /* icon_invite_qq.png in Resources */,
@@ -680,6 +679,7 @@
 				04222B591D64613800AF7CB4 /* icon_invite_kongjian.png in Resources */,
 				040FDDD01D4E3824001B1B6C /* Main.storyboard in Resources */,
 				04222B551D64613800AF7CB4 /* Home.png in Resources */,
+				045F307B1D6BD78E0010FD6E /* Assets.xcassets in Resources */,
 				04222B681D64613800AF7CB4 /* share.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
