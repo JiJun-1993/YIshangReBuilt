@@ -26,7 +26,10 @@ static NSString *ActLogin = @"act=login";
 //  原生
 #import "WXApiManager.h"
 #define QQAppId @"101227504"
-//   登录
+//   登录\
+
+// 加载
+#import "MBProgressHUD.h"
 //#import <AGCommon/CoreDefinition.h>
 
 // Include any system framework and library headers here that should be included in all compilation units.

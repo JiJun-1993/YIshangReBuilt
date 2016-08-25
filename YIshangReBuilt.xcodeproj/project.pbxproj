@@ -53,6 +53,9 @@
 		04222BB61D65535800AF7CB4 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 04222BB51D65535800AF7CB4 /* libsqlite3.tbd */; };
 		04222BB91D655B5B00AF7CB4 /* 1024.png in Resources */ = {isa = PBXBuildFile; fileRef = 04222BB81D655B5B00AF7CB4 /* 1024.png */; };
 		04222BBB1D65993F00AF7CB4 /* homes.png in Resources */ = {isa = PBXBuildFile; fileRef = 04222BBA1D65993F00AF7CB4 /* homes.png */; };
+		044334301D6EDE24002B5341 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0443342C1D6EDE24002B5341 /* MBProgressHUD.m */; };
+		044334311D6EDE24002B5341 /* viewPro.m in Sources */ = {isa = PBXBuildFile; fileRef = 0443342E1D6EDE24002B5341 /* viewPro.m */; };
+		044334321D6EDE24002B5341 /* viewPro.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0443342F1D6EDE24002B5341 /* viewPro.xib */; };
 		045F2DDD1D6B05FE0010FD6E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045F2DDC1D6B05FE0010FD6E /* Security.framework */; };
 		045F2DDF1D6B060A0010FD6E /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 045F2DDE1D6B060A0010FD6E /* libiconv.tbd */; };
 		045F2DE11D6B06100010FD6E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045F2DE01D6B06100010FD6E /* SystemConfiguration.framework */; };
@@ -151,6 +154,11 @@
 		04222BB51D65535800AF7CB4 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		04222BB81D655B5B00AF7CB4 /* 1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1024.png; sourceTree = "<group>"; };
 		04222BBA1D65993F00AF7CB4 /* homes.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = homes.png; sourceTree = "<group>"; };
+		0443342B1D6EDE24002B5341 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		0443342C1D6EDE24002B5341 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		0443342D1D6EDE24002B5341 /* viewPro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = viewPro.h; sourceTree = "<group>"; };
+		0443342E1D6EDE24002B5341 /* viewPro.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = viewPro.m; sourceTree = "<group>"; };
+		0443342F1D6EDE24002B5341 /* viewPro.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = viewPro.xib; sourceTree = "<group>"; };
 		045F2DDC1D6B05FE0010FD6E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		045F2DDE1D6B060A0010FD6E /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		045F2DE01D6B06100010FD6E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -354,6 +362,7 @@
 		040FDE031D4E3998001B1B6C /* FrameWork */ = {
 			isa = PBXGroup;
 			children = (
+				0443342A1D6EDE24002B5341 /* MBProgress */,
 				040FDE071D4E3BC1001B1B6C /* Category */,
 			);
 			path = FrameWork;
@@ -443,6 +452,18 @@
 				04222B741D6461FD00AF7CB4 /* WxCover.xib */,
 			);
 			path = MoreCover;
+			sourceTree = "<group>";
+		};
+		0443342A1D6EDE24002B5341 /* MBProgress */ = {
+			isa = PBXGroup;
+			children = (
+				0443342B1D6EDE24002B5341 /* MBProgressHUD.h */,
+				0443342C1D6EDE24002B5341 /* MBProgressHUD.m */,
+				0443342D1D6EDE24002B5341 /* viewPro.h */,
+				0443342E1D6EDE24002B5341 /* viewPro.m */,
+				0443342F1D6EDE24002B5341 /* viewPro.xib */,
+			);
+			path = MBProgress;
 			sourceTree = "<group>";
 		};
 		045F2DE41D6B08E30010FD6E /* FrameWorks */ = {
@@ -653,6 +674,7 @@
 				04222B691D64613800AF7CB4 /* Yishang.png in Resources */,
 				04222B7A1D6461FD00AF7CB4 /* SeleObjView.xib in Resources */,
 				04222B5A1D64613800AF7CB4 /* icon_invite_pengyou.png in Resources */,
+				044334321D6EDE24002B5341 /* viewPro.xib in Resources */,
 				04222B661D64613800AF7CB4 /* More.png in Resources */,
 				04222B521D64613800AF7CB4 /* 456.png in Resources */,
 				04222B5C1D64613800AF7CB4 /* icon_invite_shouji.png in Resources */,
@@ -709,6 +731,8 @@
 				045F2FF01D6B140F0010FD6E /* NSURLRequest+WithString.m in Sources */,
 				04222B751D6461FD00AF7CB4 /* JudgeLogView.m in Sources */,
 				040FDDD31D4E3824001B1B6C /* YIshangReBuilt.xcdatamodeld in Sources */,
+				044334311D6EDE24002B5341 /* viewPro.m in Sources */,
+				044334301D6EDE24002B5341 /* MBProgressHUD.m in Sources */,
 				045F2FEC1D6B129C0010FD6E /* WXApiManager.m in Sources */,
 				040FDDCA1D4E3824001B1B6C /* AppDelegate.m in Sources */,
 				04222B771D6461FD00AF7CB4 /* QQCover.m in Sources */,
