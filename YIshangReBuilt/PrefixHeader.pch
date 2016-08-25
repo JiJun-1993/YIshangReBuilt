@@ -15,8 +15,9 @@
 #import <ShareSDK/ShareSDK.h>
 #import <TencentOpenAPI/QQApiInterface.h>
 #import <TencentOpenAPI/TencentOAuth.h>
-#define QQloginClick  @"graph.qq.com"
+static NSString* QQloginClick = @"graph.qq.com";
 static NSString *WxLoginClick = @"open.weixin";
+static NSString *ActLogout = @"act=logout";
 #import "WXApi.h"
 
 //  原生

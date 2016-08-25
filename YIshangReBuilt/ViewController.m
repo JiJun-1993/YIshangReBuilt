@@ -58,6 +58,8 @@ static NSString *AuthState = @"lct_ibestry_vipysw_login";
  @property(strong,nonatomic)NSArray* compArray;
 //  加载时候的蒙版
 
+// cookie
+@property(strong,nonatomic)WKProcessPool* processPool;
 @end
 
 @implementation ViewController
@@ -67,17 +69,15 @@ static NSString *AuthState = @"lct_ibestry_vipysw_login";
     // Do any additional setup after loading the view, typically from a nib.
     [self setNaviBar];
     
-    [self initParameter];
-    
-    [self setMainPage ];
-    
+//    [self initParameter];
+//    [self setMainPage ];
+    [self setCookie];
    
-    
     [self setCover];
     
      [self setUserAgent];
     // newVersionTest 获取新版本信息
-    [self newVersionTest];
+//    [self newVersionTest];
     
 }
 //懒加载
@@ -176,14 +176,9 @@ static NSString *AuthState = @"lct_ibestry_vipysw_login";
 //  加载主页
 // webview 首次加载
 -(void)setMainPage{
-    NSURL* url =[NSURL URLWithString:@"http://www.vipysw.com/mobile/"];
-    //    NSURLRequest* request = [NSURLRequest requestWithURL:url];
-    NSURLRequest *request= [NSURLRequest requestWithURL:url];
-    //    NSString* HOST = strHtml;
-    [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
+     NSMutableURLRequest * request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://www.vipysw.com/mobile/"]];
     [_wkWebView loadRequest:request];
     [self.view addSubview:_wkWebView];
-    //    [self.view addSubview:_wkWebView];
 }
 // 键盘处理
 -(void)addNotiOfKeybod{
@@ -393,12 +388,14 @@ static NSString *AuthState = @"lct_ibestry_vipysw_login";
         [self loginWx];
 //        [_coverView removeFromSuperview];
     }
-    if([strHtml rangeOfString:QQloginClick].location != NSNotFound)//_roaldSearchTdecidePolicyForNavigationActionext
+    else if([strHtml rangeOfString:QQloginClick].location != NSNotFound)//_roaldSearchTdecidePolicyForNavigationActionext
     {
         [self loginQQ];
 //        [_coverView removeFromSuperview];
+    }else if([strHtml rangeOfString:ActLogout].location != NSNotFound){
+        [self logOut];
     }
-
+    
     decisionHandler(WKNavigationActionPolicyAllow);
 }
 //2 收到服务器响应头，根据navigationResponse 内容决定是否继续跳转
@@ -415,6 +412,46 @@ static NSString *AuthState = @"lct_ibestry_vipysw_login";
 - (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation{
    
     [self setCompArr];
+    
+//    //获得沙盒路径
+    NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+
+    NSString *filePath = [documentPath stringByAppendingPathComponent:@"cookie.archiver"];
+    
+    NSArray* cookieArr =  [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+//    for (NSString* cookieStr in cookieArr) {
+//        NSArray* cooNameWithKey = [cookieStr componentsSeparatedByString:@"="];
+//        
+//    }
+//    NSHTTPCookieStorage* storage  = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    if (cookieArr != nil) {
+//        //js函数
+        NSString *JSFuncString = @"function setCookie(name,value,expires)\
+        {\
+        var oDate=new Date();\
+        oDate.setDate(oDate.getDate()+expires);\
+        document.cookie=name+'='+value+';expires='+oDate;\
+        }";
+//
+//        //拼凑js字符串
+        NSMutableString *JSCookieString = JSFuncString.mutableCopy;
+        for (NSString* aCookie in cookieArr) {
+            NSArray* arr = [aCookie componentsSeparatedByString:@"="];
+            NSString *excuteJSString = [NSString stringWithFormat:@"setCookie('%@', '%@', 1);", arr[0], arr[1]];
+            [JSCookieString appendString:excuteJSString];
+            //
+
+        }
+//        for (NSHTTPCookie *cookie in storage.cookies) {
+//            NSString *excuteJSString = [NSString stringWithFormat:@"setCookie('%@', '%@', 1);", cookie.name, cookie.value];
+//            [JSCookieString appendString:excuteJSString];
+//            
+//            NSLog(@"count %lu finish_cookie %@",storage.cookies.count,cookie);
+//        }
+        //执行js
+        [webView evaluateJavaScript:JSCookieString completionHandler:nil];
+    }
+   
 }
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error{
     [_wkWebView stopLoading];
@@ -437,11 +474,21 @@ static NSString *AuthState = @"lct_ibestry_vipysw_login";
 //             NSLog(@"%@",user.credential);
 //             NSLog(@"token=%@",user.credential.token);
 //             NSLog(@"nickname=%@",user.nickname);
-            NSURL* url = [NSURL URLWithString: QQLoginUrl(user.uid, user.credential.token)];
+            NSURL* url = [NSURL URLWithString:QQLoginUrl(user.uid, user.credential.token)];
              NSURLRequest* request = [NSURLRequest requestWithURL:url];
              [_wkWebView loadRequest:request];
-             
-         }
+//             [self saveCookieArr];
+             [_wkWebView evaluateJavaScript:@"document.cookie.split(';')" completionHandler:^(NSArray* cookieStr, NSError * _Nullable error) {
+                 
+                 //                 获得沙盒路径
+                 NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+                 //获取文件路径，由于归档后文件会加密，所以文件后缀可以任意取
+                 NSString *filePath = [documentPath stringByAppendingPathComponent:@"cookie.archiver"];
+                 
+                 [NSKeyedArchiver archiveRootObject:cookieStr toFile:filePath];
+             }];
+
+        }
          
          else
          {
@@ -465,43 +512,79 @@ static NSString *AuthState = @"lct_ibestry_vipysw_login";
             viewController:self
                   delegate:[WXApiManager sharedManager]];
     }
-
-//    [ShareSDK getUserInfo:SSDKPlatformTypeWechat
-//           onStateChanged:^(SSDKResponseState state, SSDKUser *user, NSError *error)
-//     {
-//         
-//         if (state == SSDKResponseStateSuccess)
-//         {
-//             NSLog(@"uid=%@",user.uid);
-//             NSLog(@"%@",user.credential);
-//             NSLog(@"token=%@",user.credential.token);
-//             NSLog(@"nickname=%@",user.nickname);
-//             
-//             NSURL* url = [NSURL URLWithString:WxreqWithCode(user.credential.token)];
-//             NSURLRequest* request = [NSURLRequest requestWithURL:url];
-//             [_wkWebView loadRequest:request];
-//         }
-//         else
-//         {
-//             NSLog(@"%@",error);
-//         }
-//     }];
 }
 //  Delegate  of   WXManager
 // delegate of  WeixinLogin
 - (void)WxManagerDidRecvAuthResponse:(SendAuthResp *)response{
     NSString* res = WxreqWithCode(response.code);
-    //    NSLog(@"code %@: ",res);
-    //    041sB2vp0NkBPc1ZcOwp0023vp0sB2vl
+   
     if (res) {
-        //        [self.webView loadRequest:[NSURLRequest requestWithString:res]];
+        
         [ _wkWebView loadRequest:[NSURLRequest requestWithString:res]];
+        
     }
     else [_wkWebView loadRequest:[NSURLRequest requestWithString:MembCenter]];
     
-    //    [self getTokenWithCode:response.code];
 }
-#pragma  mark  setUserAgent 
+- (WKProcessPool *)processPool {
+    if (!_processPool) {
+        static dispatch_once_t predicate;
+        dispatch_once(&predicate, ^{
+            _processPool = [[WKProcessPool alloc] init];
+        });
+    }
+    
+    return _processPool;
+}
+- (void)setCookie {
+    //判断系统是否支持wkWebView
+    Class wkWebView = NSClassFromString(@"WKWebView");
+    if (!wkWebView) {
+        return;
+    }
+    WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
+    config.processPool = self.processPool;
+    _wkWebView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:config];
+    
+    _clickedUrl = nil;
+    //  02  初始化新的webView
+    _wkWebView = [[WKWebView alloc]initWithFrame:CGRectZero configuration:config];
+    _wkWebView.x = 0;
+    _wkWebView.y = CGRectGetMaxY(self.naviView.frame);
+    _wkWebView.width = screenBounds.size.width;
+    _wkWebView.height = (screenBounds.size.height - self.naviView.height);
+    _wkWebView.navigationDelegate = self;
+    
+    NSURLRequest *request = [NSURLRequest requestWithString:HomeRequest];
+    _wkWebView.navigationDelegate = self;
+    [WXApiManager sharedManager].delegate = self;
+    [_wkWebView loadRequest:request];
+    
+    [self.view addSubview:_wkWebView];
+}
+// save cookie to local
+-(void)saveCookieArr{
+    // 把cookie存储到本地
+    [_wkWebView evaluateJavaScript:@"document.cookie.split(';')" completionHandler:^(NSArray* cookieStr, NSError * _Nullable error) {
+        
+        //                 获得沙盒路径
+        NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+        //获取文件路径，由于归档后文件会加密，所以文件后缀可以任意取
+        NSString *filePath = [documentPath stringByAppendingPathComponent:@"cookie.archiver"];
+        
+        [NSKeyedArchiver archiveRootObject:cookieStr toFile:filePath];
+    }];
+}
+-(void)logOut{
+    //                 获得沙盒路径
+    NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString *filePath = [documentPath stringByAppendingPathComponent:@"cookie.archiver"];
+
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    
+
+}
+#pragma  mark  setUserAgent
 -(void)setUserAgent{
     UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectZero
                           ];
