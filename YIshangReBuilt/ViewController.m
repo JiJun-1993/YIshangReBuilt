@@ -306,10 +306,12 @@ static NSString *MembCenter = @"app=member";
     NSURL* shareImageUrl = [NSURL URLWithString:shareImageUrlStr];
     NSString* shareDcrp = _compArray[3];
     // 判断点击的是哪个按钮
-    if (1 == tag) {
-        [_wkWebView loadRequest:[NSURLRequest requestWithString:HomeRequest]];
-    }
-    if (2 == tag) {
+    switch (tag) {
+        case 0:
+            break;
+        case 1:  [_wkWebView loadRequest:[NSURLRequest requestWithString:HomeRequest]];
+            break;
+        case 2: {
             NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
             
             [shareParams SSDKSetupShareParamsByText:shareTitle
@@ -317,40 +319,43 @@ static NSString *MembCenter = @"app=member";
                                                 url:sharUrl
                                               title:shareDcrp
                                                type:SSDKContentTypeWebPage];
-           
+            
             //2、分享（可以弹出我们的分享菜单和编辑界面）
             [ShareSDK showShareActionSheet:nil //要显示菜单的视图, iPad版中此参数作为弹出菜单的参照视图，只有传这个才可以弹出我们的分享菜单，可以传分享的按钮对象或者自己创建小的view 对象，iPhone可以传nil不会影响
                                      items:nil
                                shareParams:shareParams
                        onShareStateChanged:^(SSDKResponseState state, SSDKPlatformType platformType, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error, BOOL end) {
-                           
+                           UIAlertController* alertVc = [[UIAlertController alloc]init];
+                           UIAlertAction* alertAction = [[UIAlertAction alloc]init];
                            switch (state) {
                                case SSDKResponseStateSuccess:
                                {
-                                   UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"分享成功"
-                                                                                       message:nil
-                                                                                      delegate:nil
-                                                                             cancelButtonTitle:@"确定"
-                                                                             otherButtonTitles:nil];
-                                   [alertView show];
-                                   break;
+                                   
+                                   alertAction = [UIAlertAction actionWithTitle:@"分享成功" style:UIAlertActionStyleCancel handler:nil];
+                                                                      break;
                                }
                                case SSDKResponseStateFail:
                                {
-                                   UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"分享失败"
-                                                                                   message:[NSString stringWithFormat:@"%@",error]
-                                                                                  delegate:nil
-                                                                         cancelButtonTitle:@"OK"
-                                                                         otherButtonTitles:nil, nil];
-                                   [alert show];
+                                        alertAction = [UIAlertAction actionWithTitle:@"分享成功" style:UIAlertActionStyleCancel handler:nil];
+                                   
                                    break;
                                }
                                default:
                                    break;
                            }
+//                           [alertVc addAction:alertAction];
+//                           [self presentViewController:alertVc animated:YES completion:nil];
+                           
                        }
              ];
+
+        
         }
+        default:
+            break;
+    }
+    
+    
 }
 // 点击 qq 或 微信 分享
 -(void)changeScene:(int)scene{
