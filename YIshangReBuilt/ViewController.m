@@ -39,7 +39,7 @@ static NSString *MembCenter = @"app=member";
 
 #import "SeleObjView.h"
 #import "JudgeLogView.h"
-@interface ViewController ()<WKNavigationDelegate,JudgeLogViewDelegate,SeleObjViewDelegate,WXApiManagerDelegate,UIGestureRecognizerDelegate>
+@interface ViewController ()<WKNavigationDelegate,JudgeLogViewDelegate,SeleObjViewDelegate,WXApiManagerDelegate,UIGestureRecognizerDelegate,MBProgressHUDDelegate>
 @property(nonatomic,strong)WKWebView* wkWebView;
 
 //@property (weak, nonatomic) IBOutlet UIWebView *wkWebView;
@@ -53,7 +53,7 @@ static NSString *MembCenter = @"app=member";
 // 记录上一个网址
 @property(strong,nonatomic)NSString* previousUrl;
 // 点击分享视图 ，蒙版
-@property(strong,nonatomic)UIView* seleView;
+@property(strong,nonatomic)UIView* coverView;
 @property(nonatomic,strong)SeleObjView* seleObjView;
 @property(strong,nonatomic)JudgeLogView* seleObj;
 //  记录网页信息
@@ -62,6 +62,8 @@ static NSString *MembCenter = @"app=member";
 
 // cookie
 @property(strong,nonatomic)WKProcessPool* processPool;
+// Progress Cycle
+@property(strong,nonatomic)MBProgressHUD* progresHUD;
 @end
 
 @implementation ViewController
@@ -75,7 +77,7 @@ static NSString *MembCenter = @"app=member";
 //    [self setMainPage ];
     [self setCookie];
 
-    [self setCover];
+//    [self setCover];
     
      [self setUserAgent];
     // newVersionTest 获取新版本信息
@@ -90,11 +92,14 @@ static NSString *MembCenter = @"app=member";
     }
     return _seleObjView;
 }
--(UIView*)seleView{
-    if (_seleView == nil) {
-        _seleView = [[UIView alloc]initWithFrame:self.view.frame];
+-(UIView*)coverView{
+    if (_coverView == nil) {
+        _coverView = [[UIView alloc]initWithFrame:self.view.frame];
+        UITapGestureRecognizer* gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gestureRecv)];
+        [_coverView addGestureRecognizer:gesture];
+        _coverView.alpha = 0.1;
     }
-    return _seleView;
+    return _coverView;
 }
     // 调用js 函数，懒加载网页info
 -(void)setCompArr{
@@ -105,6 +110,12 @@ static NSString *MembCenter = @"app=member";
          _compArray = [result componentsSeparatedByString:@"#"];
          
      }];
+}
+-(MBProgressHUD*)progresHUD{
+    if (_progresHUD == nil) {
+        _progresHUD = [[MBProgressHUD alloc]initWithView:self.view];
+    }
+    return _progresHUD;
 }
 -(void)setNaviBar{
 // 导航条
@@ -251,12 +262,7 @@ static NSString *MembCenter = @"app=member";
 //  设置点击分享后的覆盖视图
 -(void)setCover
 {
-    UITapGestureRecognizer* gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gestureRecv)];
-    [self.seleView addGestureRecognizer:gesture];
-    self.seleView.alpha = 0.2;
-    [self.view addSubview:self.seleView];
-    
-  
+    [self.view addSubview:self.coverView];
 //    // 添加分享对象
 //    JudgeViewType logType;
 //    logType = 0;
@@ -271,8 +277,8 @@ static NSString *MembCenter = @"app=member";
 }
 #pragma mark -- return click
 -(void)returnClick:(UIButton*)returnBtn{
-    [_wkWebView loadRequest:[NSURLRequest requestWithString:_previousUrl]];
-    //    [self.webView goBack];
+//    [_wkWebView loadRequest:[NSURLRequest requestWithString:_previousUrl]];
+    [self.wkWebView goBack];
 }
 #pragma mark 弹出分享界面
 
@@ -292,7 +298,7 @@ static NSString *MembCenter = @"app=member";
 }
 -(void)maskShow{
     
-    [self.view addSubview:self.seleView];
+    [self.view addSubview:self.coverView];
 }
 //  点击 More 弹出的view
 -(void)seleObjViewWithTag:(int)tag{
@@ -369,8 +375,8 @@ static NSString *MembCenter = @"app=member";
 
 #pragma mark delegate of  webview
 -(void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation{
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-
+    [self showProgress];
+//   _progresHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 }
 
 -(void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler{
@@ -386,17 +392,17 @@ static NSString *MembCenter = @"app=member";
 //    }];
     if ([strHtml rangeOfString:QQloginClick].location != NSNotFound || [strHtml rangeOfString:WxLoginClick].location != NSNotFound) {
         [self logInWithHtml:strHtml];
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
+//        [MBProgressHUD hideHUDForView:self.view animated:YES];
+        [self disProgress];
     }else if([strHtml rangeOfString:ActLogout].location != NSNotFound){
         [self logOut];
-        [MBProgressHUD hideHUDForView:self.view animated:YES];
+//        [MBProgressHUD hideHUDForView:self.view animated:YES];
+       [self disProgress];
     }
-    
     decisionHandler(WKNavigationActionPolicyAllow);
 }
 //2 收到服务器响应头，根据navigationResponse 内容决定是否继续跳转
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler{
-    
     if(([_clickedUrl rangeOfString:WxLoginClick].location != NSNotFound )|([_clickedUrl rangeOfString:QQloginClick].location != NSNotFound )){
         decisionHandler(WKNavigationResponsePolicyCancel);
         return;
@@ -407,7 +413,10 @@ static NSString *MembCenter = @"app=member";
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation{
     
-    [MBProgressHUD hideHUDForView:self.view animated:YES];
+//    [self disProgress];
+//    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    [self disProgress];
+
 //  获取网页信息，准备分享
     [self setCompArr];
     
@@ -425,25 +434,20 @@ static NSString *MembCenter = @"app=member";
         oDate.setDate(oDate.getDate()+expires);\
         document.cookie=name+'='+value+';expires='+oDate;\
         }";
-//
-//        //拼凑js字符串
+        //拼凑js字符串
         NSMutableString *JSCookieString = JSFuncString.mutableCopy;
         for (NSString* aCookie in cookieArr) {
             NSArray* arr = [aCookie componentsSeparatedByString:@"="];
             NSString *excuteJSString = [NSString stringWithFormat:@"setCookie('%@', '%@', 1);", arr[0], arr[1]];
             [JSCookieString appendString:excuteJSString];
-            //
-
         }
         //执行js
         [webView evaluateJavaScript:JSCookieString completionHandler:nil];
     }
-   
 }
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error{
     [_wkWebView stopLoading];
-    //    NSLog(@"didFailProvisionalNavigation error%@",error);
-    if ([error code] == NSURLErrorCancelled) {
+      if ([error code] == NSURLErrorCancelled) {
         return;
     }
 }
@@ -527,8 +531,6 @@ static NSString *MembCenter = @"app=member";
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
     config.processPool = self.processPool;
     _wkWebView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:config];
-    
-    _clickedUrl = nil;
     //  02  初始化新的webView
     _wkWebView = [[WKWebView alloc]initWithFrame:CGRectZero configuration:config];
     _wkWebView.x = 0;
@@ -599,18 +601,34 @@ static NSString *MembCenter = @"app=member";
 #pragma mark  预备和善后
 // 预备
 -(void)viewWillAppear:(BOOL)animated{
-    
+//  添加通知
+//     01 键盘事件
     NSNotificationCenter* center =[NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(keyBoardShow) name:UIKeyboardWillShowNotification object:nil];
     // 设置代理
     _wkWebView.navigationDelegate = self;
     [WXApiManager sharedManager].delegate = self;
+   // 初始化一个参数
+    _clickedUrl = nil;
+}
+-(void)disProgress{
+    [_wkWebView stopLoading];
+    [_progresHUD hideAnimated:YES];
+
+}
+-(void)showProgress{
+    _progresHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    _coverView.backgroundColor =[UIColor lightGrayColor];
+    [_progresHUD addSubview:self.coverView];
+    
 }
 // 善后
 -(void)viewWillDisappear:(BOOL)animated{
     _wkWebView.navigationDelegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+    [WXApiManager sharedManager].delegate = nil;
+    
 }
 
 // 点击蒙版,消失
@@ -619,9 +637,12 @@ static NSString *MembCenter = @"app=member";
 }
 -(void)coverDismiss{
     [self.seleObjView removeFromSuperview];
-    [self.seleView removeFromSuperview];
+    [self.coverView removeFromSuperview];
     // 键盘消失
-      [self keyBdDismiss];
+    [self keyBdDismiss];
+    // 停止加载
+    [_wkWebView stopLoading];
+    [self disProgress ];
 //    [UIView animateWithDuration:0.5 animations:^{
 //        self.seleView.y = [UIScreen mainScreen].bounds.size.height;
 //        self.seleObj.y = self.view.height;
