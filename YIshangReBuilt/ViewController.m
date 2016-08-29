@@ -11,6 +11,8 @@
 // qq  和 微信分享
 #import <ShareSDK/ShareSDK.h>
 #import <ShareSDKUI/ShareSDK+SSUI.h>
+#import <ShareSDKUI/SSUIShareActionSheetCustomItem.h>
+#import <ShareSDKUI/SSUIEditorViewStyle.h>
 //  qq 和微信登录
 //------------------原生
 // 判断微信已经安装
@@ -280,31 +282,30 @@ static NSString *MembCenter = @"app=member";
 //    [_wkWebView loadRequest:[NSURLRequest requestWithString:_previousUrl]];
     [self.wkWebView goBack];
 }
-#pragma mark 弹出分享界面
+#pragma mark 弹出More界面，准备分享
 
 
 -(void)shareRequest:(UIButton*)shareBtn
-{   // 键盘消失
-    [self keyBdDismiss];
-    //    0 蒙版走起
-    [self setCover];
+{
     
+    //-1  获取网页信息，准备分享
+    [self setCompArr];
+    // 键盘消失
+    [self keyBdDismiss];
+    //0 蒙版走起
+    [self setCover];
     //1 弹出SeleObjView
     SeleObjView* sele = self.seleObjView;
     sele.x = CGRectGetMaxX(shareBtn.frame) - sele.width;
     sele.y = CGRectGetMaxY(shareBtn.frame);
     sele.delegate = self;
     [self.view addSubview:sele];
-}
--(void)maskShow{
-    
-    [self.view addSubview:self.coverView];
+
 }
 //  点击 More 弹出的view
 -(void)seleObjViewWithTag:(int)tag{
         // 点击蒙版和SeleObjView消失
     [self coverDismiss];
-     
     NSString* shareTitle = @" ";
     NSString* shareUrlStr = _compArray[1];
     NSURL* sharUrl = [NSURL URLWithString:shareUrlStr];
@@ -326,40 +327,53 @@ static NSString *MembCenter = @"app=member";
                                               title:shareDcrp
                                                type:SSDKContentTypeWebPage];
             
+            UIAlertController* alertVc = [[UIAlertController alloc]init];
             //2、分享（可以弹出我们的分享菜单和编辑界面）
-            [ShareSDK showShareActionSheet:nil //要显示菜单的视图, iPad版中此参数作为弹出菜单的参照视图，只有传这个才可以弹出我们的分享菜单，可以传分享的按钮对象或者自己创建小的view 对象，iPhone可以传nil不会影响
-                                     items:nil
-                               shareParams:shareParams
-                       onShareStateChanged:^(SSDKResponseState state, SSDKPlatformType platformType, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error, BOOL end) {
-                           UIAlertController* alertVc = [[UIAlertController alloc]init];
-                           UIAlertAction* alertAction = [[UIAlertAction alloc]init];
-                           switch (state) {
-                               case SSDKResponseStateSuccess:
-                               {
-                                   
-                                   alertAction = [UIAlertAction actionWithTitle:@"分享成功" style:UIAlertActionStyleCancel handler:nil];
-                                                                      break;
-                               }
-                               case SSDKResponseStateFail:
-                               {
-                                        alertAction = [UIAlertAction actionWithTitle:@"分享成功" style:UIAlertActionStyleCancel handler:nil];
-                                   
-                                   break;
-                               }
-                               default:
-                                   break;
-                           }
-//                           [alertVc addAction:alertAction];
-//                           [self presentViewController:alertVc animated:YES completion:nil];
-                           
-                       }
-             ];
+            
+            [SSUIEditorViewStyle setCancelButtonLabel:@"取消"];
+            
+            
+            UIView* view = [[UIView alloc]initWithFrame:self.view.frame];
+            view.backgroundColor  = [ UIColor blueColor];
+            
+            [ShareSDK share:SSDKPlatformSubTypeWechatSession parameters:shareParams onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
+                
+            }];
+//            [ShareSDK showShareActionSheet:view //要显示菜单的视图, iPad版中此参数作为弹出菜单的参照视图，只有传这个才可以弹出我们的分享菜单，可以传分享的按钮对象或者自己创建小的view 对象，iPhone可以传nil不会影响
+//                                     items:nil
+//                               shareParams:shareParams
+//                       onShareStateChanged:^(SSDKResponseState state, SSDKPlatformType platformType, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error, BOOL end) {
+//                           
+//                           UIAlertAction* alertAction = [[UIAlertAction alloc]init];
+//                           switch (state) {
+//                               case SSDKResponseStateSuccess:
+//                               {
+//                                   
+//                                   alertAction = [UIAlertAction actionWithTitle:@"分享成功" style:UIAlertActionStyleCancel handler:nil];
+//                                                                      break;
+//                                   
+//                               }
+//                               case SSDKResponseStateFail:
+//                               {
+//                                        alertAction = [UIAlertAction actionWithTitle:@"分享成功" style:UIAlertActionStyleCancel handler:nil];
+//                                   
+//                                   break;
+//                               }
+//                               default:
+//                                   break;
+//                           }
+////                           [alertVc addAction:alertAction];
+////                           [self presentViewController:alertVc animated:YES completion:nil];
+//                           
+//                       }
+//             ];
 
         
         }
         default:
             break;
     }
+    
     
     
 }
@@ -398,6 +412,7 @@ static NSString *MembCenter = @"app=member";
         [self logOut];
 //        [MBProgressHUD hideHUDForView:self.view animated:YES];
        [self disProgress];
+
     }
     decisionHandler(WKNavigationActionPolicyAllow);
 }
@@ -417,8 +432,6 @@ static NSString *MembCenter = @"app=member";
 //    [MBProgressHUD hideHUDForView:self.view animated:YES];
     [self disProgress];
 
-//  获取网页信息，准备分享
-    [self setCompArr];
     
     //获得沙盒路径
     NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];

@@ -64,6 +64,14 @@
 		045F2FF01D6B140F0010FD6E /* NSURLRequest+WithString.m in Sources */ = {isa = PBXBuildFile; fileRef = 045F2FEF1D6B140F0010FD6E /* NSURLRequest+WithString.m */; };
 		045F2FF21D6B2C0F0010FD6E /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 045F2FF11D6B2C0F0010FD6E /* libsqlite3.0.tbd */; };
 		045F307B1D6BD78E0010FD6E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 045F307A1D6BD78E0010FD6E /* Assets.xcassets */; };
+		04B26CEC1D71399800F35654 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B26CEB1D71399800F35654 /* CFNetwork.framework */; };
+		04B26CEE1D7139A000F35654 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B26CED1D7139A000F35654 /* CoreFoundation.framework */; };
+		04B26CF01D7139A800F35654 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B26CEF1D7139A800F35654 /* CoreTelephony.framework */; };
+		04B26CF21D7139C900F35654 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B26CF11D7139C900F35654 /* Foundation.framework */; };
+		04B26CF41D7139CF00F35654 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B26CF31D7139CF00F35654 /* UIKit.framework */; };
+		04B26CFE1D713F0300F35654 /* jpush-ios-2.1.8.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B26CFC1D713F0300F35654 /* jpush-ios-2.1.8.a */; };
+		04B26D001D7141E200F35654 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04B26CFF1D7141E200F35654 /* AdSupport.framework */; };
+		04B26D461D73C2AA00F35654 /* ShareCustom.m in Sources */ = {isa = PBXBuildFile; fileRef = 04B26D451D73C2AA00F35654 /* ShareCustom.m */; };
 		04D49CBF1D65ADB3007561A6 /* ShareSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04D49CAB1D65ADB3007561A6 /* ShareSDK.framework */; };
 		04D49CC01D65ADB3007561A6 /* ShareSDKExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04D49CAE1D65ADB3007561A6 /* ShareSDKExtension.framework */; };
 		04D49CC11D65ADB3007561A6 /* ShareSDKUI.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 04D49CAF1D65ADB3007561A6 /* ShareSDKUI.bundle */; };
@@ -169,6 +177,16 @@
 		045F2FEF1D6B140F0010FD6E /* NSURLRequest+WithString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSURLRequest+WithString.m"; sourceTree = "<group>"; };
 		045F2FF11D6B2C0F0010FD6E /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		045F307A1D6BD78E0010FD6E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		04B26CEB1D71399800F35654 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		04B26CED1D7139A000F35654 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		04B26CEF1D7139A800F35654 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		04B26CF11D7139C900F35654 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		04B26CF31D7139CF00F35654 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		04B26CFC1D713F0300F35654 /* jpush-ios-2.1.8.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = "jpush-ios-2.1.8.a"; sourceTree = "<group>"; };
+		04B26CFD1D713F0300F35654 /* JPUSHService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPUSHService.h; sourceTree = "<group>"; };
+		04B26CFF1D7141E200F35654 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		04B26D441D73C2AA00F35654 /* ShareCustom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareCustom.h; sourceTree = "<group>"; };
+		04B26D451D73C2AA00F35654 /* ShareCustom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareCustom.m; sourceTree = "<group>"; };
 		04D49CAB1D65ADB3007561A6 /* ShareSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDK.framework; sourceTree = "<group>"; };
 		04D49CAE1D65ADB3007561A6 /* ShareSDKExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKExtension.framework; sourceTree = "<group>"; };
 		04D49CAF1D65ADB3007561A6 /* ShareSDKUI.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareSDKUI.bundle; sourceTree = "<group>"; };
@@ -190,14 +208,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				04B26D001D7141E200F35654 /* AdSupport.framework in Frameworks */,
+				045F2DDD1D6B05FE0010FD6E /* Security.framework in Frameworks */,
+				04B26CF41D7139CF00F35654 /* UIKit.framework in Frameworks */,
+				04B26CF21D7139C900F35654 /* Foundation.framework in Frameworks */,
+				045F2DE31D6B06180010FD6E /* CoreGraphics.framework in Frameworks */,
+				045F2DE11D6B06100010FD6E /* SystemConfiguration.framework in Frameworks */,
+				04B26CF01D7139A800F35654 /* CoreTelephony.framework in Frameworks */,
+				04B26CEE1D7139A000F35654 /* CoreFoundation.framework in Frameworks */,
+				04B26CEC1D71399800F35654 /* CFNetwork.framework in Frameworks */,
 				045F2FF21D6B2C0F0010FD6E /* libsqlite3.0.tbd in Frameworks */,
 				04222BAE1D65532A00AF7CB4 /* libicucore.tbd in Frameworks */,
 				04222BB21D65534000AF7CB4 /* libstdc++.tbd in Frameworks */,
 				04222BB41D65534700AF7CB4 /* JavaScriptCore.framework in Frameworks */,
-				045F2DE31D6B06180010FD6E /* CoreGraphics.framework in Frameworks */,
-				045F2DE11D6B06100010FD6E /* SystemConfiguration.framework in Frameworks */,
+				04B26CFE1D713F0300F35654 /* jpush-ios-2.1.8.a in Frameworks */,
 				045F2DDF1D6B060A0010FD6E /* libiconv.tbd in Frameworks */,
-				045F2DDD1D6B05FE0010FD6E /* Security.framework in Frameworks */,
 				04222BB61D65535800AF7CB4 /* libsqlite3.tbd in Frameworks */,
 				04D49CC71D65ADB3007561A6 /* MOBFoundation.framework in Frameworks */,
 				04D49CC31D65ADB3007561A6 /* TencentOpenAPI.framework in Frameworks */,
@@ -469,6 +494,7 @@
 		045F2DE41D6B08E30010FD6E /* FrameWorks */ = {
 			isa = PBXGroup;
 			children = (
+				04B26CEA1D71397E00F35654 /* PushAdd */,
 				04D49CAA1D65ADB3007561A6 /* ShareSDK */,
 				04222BB51D65535800AF7CB4 /* libsqlite3.tbd */,
 				04222BB31D65534700AF7CB4 /* JavaScriptCore.framework */,
@@ -492,11 +518,36 @@
 			name = ADDWxLogin;
 			sourceTree = "<group>";
 		};
+		04B26CEA1D71397E00F35654 /* PushAdd */ = {
+			isa = PBXGroup;
+			children = (
+				04B26CFB1D713F0300F35654 /* libs */,
+				04B26CFF1D7141E200F35654 /* AdSupport.framework */,
+				04B26CF31D7139CF00F35654 /* UIKit.framework */,
+				04B26CF11D7139C900F35654 /* Foundation.framework */,
+				04B26CEF1D7139A800F35654 /* CoreTelephony.framework */,
+				04B26CED1D7139A000F35654 /* CoreFoundation.framework */,
+				04B26CEB1D71399800F35654 /* CFNetwork.framework */,
+			);
+			name = PushAdd;
+			sourceTree = "<group>";
+		};
+		04B26CFB1D713F0300F35654 /* libs */ = {
+			isa = PBXGroup;
+			children = (
+				04B26CFC1D713F0300F35654 /* jpush-ios-2.1.8.a */,
+				04B26CFD1D713F0300F35654 /* JPUSHService.h */,
+			);
+			path = libs;
+			sourceTree = "<group>";
+		};
 		04D49CAA1D65ADB3007561A6 /* ShareSDK */ = {
 			isa = PBXGroup;
 			children = (
 				04D49CAB1D65ADB3007561A6 /* ShareSDK.framework */,
 				04D49CAC1D65ADB3007561A6 /* Support */,
+				04B26D441D73C2AA00F35654 /* ShareCustom.h */,
+				04B26D451D73C2AA00F35654 /* ShareCustom.m */,
 			);
 			name = ShareSDK;
 			path = ../ShareSDK;
@@ -736,6 +787,7 @@
 				045F2FEC1D6B129C0010FD6E /* WXApiManager.m in Sources */,
 				040FDDCA1D4E3824001B1B6C /* AppDelegate.m in Sources */,
 				04222B771D6461FD00AF7CB4 /* QQCover.m in Sources */,
+				04B26D461D73C2AA00F35654 /* ShareCustom.m in Sources */,
 				040FDE0A1D4E3BD7001B1B6C /* UIView+Frame.m in Sources */,
 				040FDDC71D4E3824001B1B6C /* main.m in Sources */,
 				04222B791D6461FD00AF7CB4 /* SeleObjView.m in Sources */,
@@ -898,12 +950,14 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = /Users/mac/Desktop/YishangReBuild/YIshangReBuilt/YIshangReBuilt/PrefixHeader.pch;
 				INFOPLIST_FILE = YIshangReBuilt/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/YIshangReBuilt/ShareSDK/Support/PlatformSDK/WeChatSDK",
 					"$(PROJECT_DIR)/ShareSDK/Support/PlatformSDK/WeChatSDK",
 					"$(PROJECT_DIR)/ShareSDK/Support/PlatformSDK/QQSDK",
+					"$(PROJECT_DIR)/FrameWorks/libs",
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jijun.YishangAppID;
@@ -933,12 +987,14 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = /Users/mac/Desktop/YishangReBuild/YIshangReBuilt/YIshangReBuilt/PrefixHeader.pch;
 				INFOPLIST_FILE = YIshangReBuilt/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/YIshangReBuilt/ShareSDK/Support/PlatformSDK/WeChatSDK",
 					"$(PROJECT_DIR)/ShareSDK/Support/PlatformSDK/WeChatSDK",
 					"$(PROJECT_DIR)/ShareSDK/Support/PlatformSDK/QQSDK",
+					"$(PROJECT_DIR)/FrameWorks/libs",
 				);
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.jijun.YishangAppID;

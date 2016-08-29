@@ -30,6 +30,12 @@ static NSString *ActLogin = @"act=login";
 
 // 加载
 #import "MBProgressHUD.h"
+
+// 推送
+#import "JPUSHService.h"
+static NSString *appKey = @"015822488fd16d8ce0e8315b";
+static NSString *channel = @"Publish channel";
+static BOOL isProduction = FALSE;
 //#import <AGCommon/CoreDefinition.h>
 
 // Include any system framework and library headers here that should be included in all compilation units.
