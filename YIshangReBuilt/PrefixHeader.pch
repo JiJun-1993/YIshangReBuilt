@@ -36,6 +36,8 @@ static NSString *ActLogin = @"act=login";
 static NSString *appKey = @"015822488fd16d8ce0e8315b";
 static NSString *channel = @"Publish channel";
 static BOOL isProduction = FALSE;
+
+#define ScreenBound [UIScreen mainScreen].bounds;
 //#import <AGCommon/CoreDefinition.h>
 
 // Include any system framework and library headers here that should be included in all compilation units.

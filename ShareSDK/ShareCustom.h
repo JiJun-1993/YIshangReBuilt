@@ -9,5 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface ShareCustom : NSObject
-+(void)shareWithContent:(id)publishContent;//自定义分享界面  
+@property(nonatomic,strong)NSMutableDictionary* parameters;
+
+-(void)shareWithContent:(id)publishContent;//自定义分享界面
+-(void)shareViewShow;
+-(void)shareViewHidden;
+
 @end

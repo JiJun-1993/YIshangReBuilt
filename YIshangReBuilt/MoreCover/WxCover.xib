@@ -25,7 +25,7 @@
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="seleShare:" destination="gaN-H4-26R" eventType="touchUpInside" id="3aJ-LJ-Fkq"/>
+                        <action selector="seleShare:" destination="gaN-H4-26R" eventType="touchUpInside" id="NmQ-Q6-MD6"/>
                     </connections>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_invite_weixin.png" highlightedImage="icon_invite_weixin.png" translatesAutoresizingMaskIntoConstraints="NO" id="zH3-0Y-QZ0">
@@ -39,7 +39,7 @@
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="seleShare:" destination="gaN-H4-26R" eventType="touchUpInside" id="c4N-as-8ob"/>
+                        <action selector="seleShare:" destination="gaN-H4-26R" eventType="touchUpInside" id="SFR-jP-CyI"/>
                     </connections>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="icon_invite_pengyou.png" translatesAutoresizingMaskIntoConstraints="NO" id="2os-oa-kUZ">
@@ -49,7 +49,7 @@
             <color key="backgroundColor" red="0.92549019610000005" green="0.92549019610000005" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <inset key="insetFor6xAndEarlier" minX="-20" minY="-20" maxX="20" maxY="20"/>
-            <point key="canvasLocation" x="414" y="109.5"/>
+            <point key="canvasLocation" x="254" y="98.5"/>
         </view>
     </objects>
     <resources>

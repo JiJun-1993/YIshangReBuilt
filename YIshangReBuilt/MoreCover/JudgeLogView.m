@@ -7,7 +7,11 @@
 //
 
 #import "JudgeLogView.h"
+@interface JudgeLogView()
+@property (weak, nonatomic) IBOutlet UILabel *headView;
 
+
+@end
 @implementation JudgeLogView
 
 /*
@@ -42,22 +46,48 @@
     } @finally {
         
     }
-    
-    
-    return nibView[0];
+    JudgeLogView* shareView =  nibView[0];
+    shareView.layer.borderWidth = 1;
+    shareView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    return shareView;
 }
 -(IBAction)seleShare:(UIButton*)sender{
     //    [self removeFromSuperview];
     //    [CZCover dismiss];
+
+//    NSNumber* number = [NSNumber numberWithInteger:<#(NSInteger)#>]
+//    
+//    NSMutableArray* arrPlatform = @[SSDKPlatformSubTypeWechatSession,SSDKPlatformSubTypeWechatTimeline,SSDKPlatformSubTypeQQFriend,SSDKPlatformSubTypeQZone,SSDKPlatformSubTypeWechatFav];
+    NSInteger type = 0;
     if ([_delegate respondsToSelector:@selector(changeScene:)]) {
-        [_delegate  changeScene:sender.tag];
+        switch (sender.tag) {
+            case 0:
+                type = SSDKPlatformSubTypeWechatSession;
+                break;
+            case 1:
+                type = SSDKPlatformSubTypeWechatTimeline;
+                break;
+            case 2:
+                type = SSDKPlatformSubTypeQQFriend;
+                break;
+            case 3:
+                type = SSDKPlatformSubTypeQZone;
+                break;
+            case 4:
+                type = SSDKPlatformSubTypeWechatFav;
+                break;
+            default:
+                break;
+        }
+        
+        [_delegate  changeScene:type];
     }
 }
--(IBAction)qqShare:(UIButton*)sender{
-    //    [CZCover dismiss];
-    if ([_delegate respondsToSelector:@selector(qqShareSele:)]) {
-        [_delegate  qqShareSele:sender.tag];
-    }
-}
+//-(IBAction)qqShare:(UIButton*)sender{
+//    //    [CZCover dismiss];
+//    if ([_delegate respondsToSelector:@selector(qqShareSele:)]) {
+//        [_delegate  qqShareSele:sender.tag];
+//    }
+//}
 
 @end

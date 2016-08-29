@@ -5,6 +5,7 @@
 //  Created by mac on 16/7/31.
 //  Copyright © 2016年 Yishang. All rights reserved.
 //
+#import "ShareCustom.h"
 
 #import "ViewController.h"
 #import <WebKit/WebKit.h>
@@ -38,6 +39,8 @@ static NSString *MembCenter = @"app=member";
 #define ItemSize 26
 #define sysFontSize  20
 #define HomeRequest @"http://www.vipysw.com/mobile/"
+#define NewsCurrent @"http://www.vipysw.com/index.php?app=message&act=newpm"
+
 
 #import "SeleObjView.h"
 #import "JudgeLogView.h"
@@ -66,11 +69,15 @@ static NSString *MembCenter = @"app=member";
 @property(strong,nonatomic)WKProcessPool* processPool;
 // Progress Cycle
 @property(strong,nonatomic)MBProgressHUD* progresHUD;
+
+// 分享界面
+@property(strong,nonatomic)JudgeLogView* shareView;
 @end
 
 @implementation ViewController
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     [self setNaviBar];
@@ -94,15 +101,6 @@ static NSString *MembCenter = @"app=member";
     }
     return _seleObjView;
 }
--(UIView*)coverView{
-    if (_coverView == nil) {
-        _coverView = [[UIView alloc]initWithFrame:self.view.frame];
-        UITapGestureRecognizer* gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gestureRecv)];
-        [_coverView addGestureRecognizer:gesture];
-        _coverView.alpha = 0.1;
-    }
-    return _coverView;
-}
     // 调用js 函数，懒加载网页info
 -(void)setCompArr{
     //    NSString* comp =  [self.webView stringByEvaluatingJavaScriptFromString:@"app_get_share_ios()"];
@@ -110,8 +108,26 @@ static NSString *MembCenter = @"app=member";
     [_wkWebView evaluateJavaScript:js completionHandler:^(NSString *result, NSError *error)
      {
          _compArray = [result componentsSeparatedByString:@"#"];
-         
      }];
+}
+-(JudgeLogView*)shareView{
+    if (_shareView == nil) {
+        JudgeViewType type;
+        if ([WXApi isWXAppInstalled]) {
+            type = JudgeViewBothINstalled;
+        }
+        else if([QQApiInterface isQQInstalled])
+            {
+                type = JudgeViewOnlyQQ;
+            }
+            else{
+//                type = ;
+            }
+        _shareView  = [JudgeLogView instanceJudgeViewStyle:type];
+        _shareView.center = self.view.center;
+        _shareView.alpha = 0;
+    }
+    return _shareView;
 }
 -(MBProgressHUD*)progresHUD{
     if (_progresHUD == nil) {
@@ -212,7 +228,8 @@ static NSString *MembCenter = @"app=member";
 }
 //  移除键盘上面的accessView
 -(void)keyBoardShow{
-     [self setCover];
+    
+    [self setCover];
 
     UIWindow *keyboardWindow = nil;
     for (UIWindow *testWindow in [[UIApplication sharedApplication] windows]) {
@@ -264,7 +281,12 @@ static NSString *MembCenter = @"app=member";
 //  设置点击分享后的覆盖视图
 -(void)setCover
 {
-    [self.view addSubview:self.coverView];
+    _coverView = [[UIView alloc]initWithFrame:screenBounds];
+    UITapGestureRecognizer* gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gestureRecv)];
+    [_coverView addGestureRecognizer:gesture];
+    _coverView.alpha = 0.1;
+    
+    [self.view addSubview:_coverView];
 //    // 添加分享对象
 //    JudgeViewType logType;
 //    logType = 0;
@@ -284,10 +306,8 @@ static NSString *MembCenter = @"app=member";
 }
 #pragma mark 弹出More界面，准备分享
 
-
 -(void)shareRequest:(UIButton*)shareBtn
 {
-    
     //-1  获取网页信息，准备分享
     [self setCompArr];
     // 键盘消失
@@ -300,11 +320,59 @@ static NSString *MembCenter = @"app=member";
     sele.y = CGRectGetMaxY(shareBtn.frame);
     sele.delegate = self;
     [self.view addSubview:sele];
-
 }
 //  点击 More 弹出的view
 -(void)seleObjViewWithTag:(int)tag{
         // 点击蒙版和SeleObjView消失
+    [self coverDismiss];
+    // 判断点击的是哪个按钮
+    switch (tag) {
+        case 0:
+             [_wkWebView loadRequest:[NSURLRequest requestWithString:NewsCurrent]];
+            break;
+        case 1:  [_wkWebView loadRequest:[NSURLRequest requestWithString:HomeRequest]];
+            break;
+        case 2: {
+            [self setCover];
+            [self.view addSubview:self.shareView];
+            [UIView animateWithDuration:0.5 animations:^{
+                self.shareView.alpha = 1;
+            }];
+        }
+}
+//            UIAlertController* alertVc = [[UIAlertController alloc]init];
+//            //2、分享（可以弹出我们的分享菜单和编辑界面）
+//            
+//            [SSUIEditorViewStyle setCancelButtonLabel:@"取消"];
+//            
+//            
+//            UIView* view = [[UIView alloc]initWithFrame:self.view.frame];
+//            view.backgroundColor  = [ UIColor blueColor];
+//            
+////
+//            [ShareSDK showShareActionSheet:view //要显示菜单的视图, iPad版中此参数作为弹出菜单的参照视图，只有传这个才可以弹出我们的分享菜单，可以传分享的按钮对象或者自己创建小的view 对象，iPhone可以传nil不会影响
+//                                     items:nil
+//                               shareParams:shareParams
+//                       onShareStateChanged:^(SSDKResponseState state, SSDKPlatformType platformType, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error, BOOL end) {
+//                           
+//                           UIAlertAction* alertAction = [[UIAlertAction alloc]init];
+//                           ////                           [alertVc addAction:alertAction];
+////                           [self presentViewController:alertVc animated:YES completion:nil];
+//                           
+//                       }
+//             ];
+//
+//        
+//        }
+//        default:
+//            break;
+//    }
+    
+    
+    
+}
+// 点击 qq 或 微信 分享
+-(void)changeScene:(NSInteger)scene{
     [self coverDismiss];
     NSString* shareTitle = @" ";
     NSString* shareUrlStr = _compArray[1];
@@ -312,80 +380,32 @@ static NSString *MembCenter = @"app=member";
     NSString* shareImageUrlStr = _compArray[2];
     NSURL* shareImageUrl = [NSURL URLWithString:shareImageUrlStr];
     NSString* shareDcrp = _compArray[3];
-    // 判断点击的是哪个按钮
-    switch (tag) {
-        case 0:
-            break;
-        case 1:  [_wkWebView loadRequest:[NSURLRequest requestWithString:HomeRequest]];
-            break;
-        case 2: {
-            NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
-            
-            [shareParams SSDKSetupShareParamsByText:shareTitle
-                                             images:shareImageUrl
-                                                url:sharUrl
-                                              title:shareDcrp
-                                               type:SSDKContentTypeWebPage];
-            
-            UIAlertController* alertVc = [[UIAlertController alloc]init];
-            //2、分享（可以弹出我们的分享菜单和编辑界面）
-            
-            [SSUIEditorViewStyle setCancelButtonLabel:@"取消"];
-            
-            
-            UIView* view = [[UIView alloc]initWithFrame:self.view.frame];
-            view.backgroundColor  = [ UIColor blueColor];
-            
-            [ShareSDK share:SSDKPlatformSubTypeWechatSession parameters:shareParams onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
-                
-            }];
-//            [ShareSDK showShareActionSheet:view //要显示菜单的视图, iPad版中此参数作为弹出菜单的参照视图，只有传这个才可以弹出我们的分享菜单，可以传分享的按钮对象或者自己创建小的view 对象，iPhone可以传nil不会影响
-//                                     items:nil
-//                               shareParams:shareParams
-//                       onShareStateChanged:^(SSDKResponseState state, SSDKPlatformType platformType, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error, BOOL end) {
-//                           
-//                           UIAlertAction* alertAction = [[UIAlertAction alloc]init];
-//                           switch (state) {
-//                               case SSDKResponseStateSuccess:
-//                               {
-//                                   
-//                                   alertAction = [UIAlertAction actionWithTitle:@"分享成功" style:UIAlertActionStyleCancel handler:nil];
-//                                                                      break;
-//                                   
-//                               }
-//                               case SSDKResponseStateFail:
-//                               {
-//                                        alertAction = [UIAlertAction actionWithTitle:@"分享成功" style:UIAlertActionStyleCancel handler:nil];
-//                                   
-//                                   break;
-//                               }
-//                               default:
-//                                   break;
-//                           }
-////                           [alertVc addAction:alertAction];
-////                           [self presentViewController:alertVc animated:YES completion:nil];
-//                           
-//                       }
-//             ];
-
-        
-        }
-        default:
-            break;
+    
+    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
+    
+                [shareParams SSDKSetupShareParamsByText:shareTitle
+                                                 images:shareImageUrl
+                                                    url:sharUrl
+                                                  title:shareDcrp
+                                                   type:SSDKContentTypeWebPage];
+    UIAlertController* alertVc = [[UIAlertController alloc]init];
+    __block UIAlertAction* failAction;
+    [ShareSDK share:scene parameters:shareParams onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
+                    if (state == SSDKResponseStateFail) {
+                        failAction = [UIAlertAction actionWithTitle:@"分享失败" style:UIAlertActionStyleCancel handler:nil];
+                        [alertVc addAction:failAction];
+                        [self presentViewController:alertVc animated:YES completion:nil];
     }
+        
+                            }];
     
-    
-    
-}
-// 点击 qq 或 微信 分享
--(void)changeScene:(int)scene{
     
     
 }
 
--(void)qqShareSele:(int)tag{
-
-}
+//-(void)qqShareSele:(int)tag{
+//
+//}
 
 #pragma mark delegate of  webview
 -(void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation{
@@ -411,7 +431,7 @@ static NSString *MembCenter = @"app=member";
     }else if([strHtml rangeOfString:ActLogout].location != NSNotFound){
         [self logOut];
 //        [MBProgressHUD hideHUDForView:self.view animated:YES];
-       [self disProgress];
+       [_progresHUD hideAnimated:YES];
 
     }
     decisionHandler(WKNavigationActionPolicyAllow);
@@ -424,7 +444,6 @@ static NSString *MembCenter = @"app=member";
     }
     decisionHandler(WKNavigationResponsePolicyAllow);
 }
-
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation{
     
@@ -621,6 +640,7 @@ static NSString *MembCenter = @"app=member";
     // 设置代理
     _wkWebView.navigationDelegate = self;
     [WXApiManager sharedManager].delegate = self;
+    self.shareView.delegate = self;
    // 初始化一个参数
     _clickedUrl = nil;
 }
@@ -641,6 +661,7 @@ static NSString *MembCenter = @"app=member";
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
     [WXApiManager sharedManager].delegate = nil;
+    self.shareView.delegate = self;
     
 }
 
@@ -656,6 +677,8 @@ static NSString *MembCenter = @"app=member";
     // 停止加载
     [_wkWebView stopLoading];
     [self disProgress ];
+    //分享取消
+    [self.shareView removeFromSuperview];
 //    [UIView animateWithDuration:0.5 animations:^{
 //        self.seleView.y = [UIScreen mainScreen].bounds.size.height;
 //        self.seleObj.y = self.view.height;
