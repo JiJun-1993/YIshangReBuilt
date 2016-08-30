@@ -20,6 +20,11 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // 修改userAgent
+    NSString *ua = [NSString stringWithFormat:@"%@",
+                    @"vipysw_cmnetec_ios"];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{@"UserAgent" : ua, @"User-Agent" : ua}];
+    
     // Override point for customization after application launch.
     [ShareSDK registerApp:@"1571aeb3c27e8" activePlatforms:@[
                                                 @(SSDKPlatformTypeWechat),

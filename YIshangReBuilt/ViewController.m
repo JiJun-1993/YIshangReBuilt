@@ -41,7 +41,6 @@ static NSString *MembCenter = @"app=member";
 #define HomeRequest @"http://www.vipysw.com/mobile/"
 #define NewsCurrent @"http://www.vipysw.com/index.php?app=message&act=newpm"
 
-
 #import "SeleObjView.h"
 #import "JudgeLogView.h"
 @interface ViewController ()<WKNavigationDelegate,JudgeLogViewDelegate,SeleObjViewDelegate,WXApiManagerDelegate,UIGestureRecognizerDelegate,MBProgressHUDDelegate>
@@ -80,6 +79,8 @@ static NSString *MembCenter = @"app=member";
     
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
+     [self setUserAgent];
+    
     [self setNaviBar];
     
 //    [self initParameter];
@@ -88,7 +89,7 @@ static NSString *MembCenter = @"app=member";
 
 //    [self setCover];
     
-     [self setUserAgent];
+    
     // newVersionTest 获取新版本信息
 //    [self newVersionTest];
     
@@ -560,16 +561,28 @@ static NSString *MembCenter = @"app=member";
     if (!wkWebView) {
         return;
     }
+    
+    WKWebView* webView = [[WKWebView alloc]initWithFrame:CGRectZero];
+    
+    NSDictionary *dictionnary = [[NSDictionary alloc] initWithObjectsAndKeys:@"vipysw_cmnetec_ios", @"UserAgent", nil];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionnary];
+    [webView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(NSString *oldAgent, NSError * _Nullable error) {
+        NSLog(@"oldAgent%@",oldAgent);
+    }];
+    
+    
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
     config.processPool = self.processPool;
-    _wkWebView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:config];
+    webView = [[WKWebView alloc] initWithFrame:CGRectZero configuration:config];
     //  02  初始化新的webView
-    _wkWebView = [[WKWebView alloc]initWithFrame:CGRectZero configuration:config];
-    _wkWebView.x = 0;
-    _wkWebView.y = CGRectGetMaxY(self.naviView.frame);
-    _wkWebView.width = screenBounds.size.width;
-    _wkWebView.height = (screenBounds.size.height - self.naviView.height);
-    _wkWebView.navigationDelegate = self;
+    webView = [[WKWebView alloc]initWithFrame:CGRectZero configuration:config];
+    webView.x = 0;
+    webView.y = CGRectGetMaxY(self.naviView.frame);
+    webView.width = screenBounds.size.width;
+    webView.height = (screenBounds.size.height - self.naviView.height);
+    webView.navigationDelegate = self;
+    
+    _wkWebView = webView;
     
     NSURLRequest *request = [NSURLRequest requestWithString:HomeRequest];
     
@@ -614,20 +627,22 @@ static NSString *MembCenter = @"app=member";
 }
 #pragma  mark  setUserAgent
 -(void)setUserAgent{
-    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectZero
-                          ];
-    NSString *oldAgent = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
+    WKWebView* webView = [[WKWebView alloc]initWithFrame:CGRectZero];
+//    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectZero
+    __block  NSString *oldAgents;
     
-    
+    [_wkWebView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(NSString *oldAgent, NSError * _Nullable error) {
+        oldAgents = oldAgent;
+        NSLog(@"oldAgent%@",oldAgent);
+    }];
     //add my info to the new agent
-    NSString *newAgent = [NSString stringWithFormat:@"%@ vipysw_cmnetec_ios",oldAgent];
+    NSString *newAgent = @"vipysw_cmnetec_ios";
     
-    [oldAgent stringByAppendingString:@" Jiecao/2.4.7 ch_appstore"];
-    
+//    [oldAgent stringByAppendingString:@" Jiecao/2.4.7 ch_appstore"];
     
     //regist the new agent
-    NSDictionary *dictionnary = [[NSDictionary alloc] initWithObjectsAndKeys:newAgent, @"UserAgent", nil];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionnary];
+//    NSDictionary *dictionnary = [[NSDictionary alloc] initWithObjectsAndKeys:newAgent, @"UserAgent", nil];
+//    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionnary];
 }
 
 #pragma mark  预备和善后
