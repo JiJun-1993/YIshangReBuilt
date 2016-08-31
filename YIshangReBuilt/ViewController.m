@@ -79,7 +79,7 @@ static NSString *MembCenter = @"app=member";
     
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-     [self setUserAgent];
+//     [self setUserAgent];
     
     [self setNaviBar];
     
@@ -187,12 +187,7 @@ static NSString *MembCenter = @"app=member";
     [self.naviView addSubview:self.btnShare];
     
     [self.view addSubview:self.naviView];
-    
-    
-//    naviView.backgroundColor = [UIColor redColor];
     [self.view addSubview:_naviView];
-    
-    
 }
 //  初始化 WKWebview
 //-(void)initParameter{
@@ -422,9 +417,9 @@ static NSString *MembCenter = @"app=member";
     _previousUrl = _clickedUrl;
     _clickedUrl = strHtml;
     
-//    [_wkWebView evaluateJavaScript:@"document.documentElement.outerHTML" completionHandler:^(NSString* html, NSError * _Nullable error) {
-//        NSLog(@"html %@",html);
-//    }];
+    [webView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(NSString *oldAgent, NSError * _Nullable error) {
+        NSLog(@"oldAgent%@",oldAgent);
+    }];
     if ([strHtml rangeOfString:QQloginClick].location != NSNotFound || [strHtml rangeOfString:WxLoginClick].location != NSNotFound) {
         [self logInWithHtml:strHtml];
 //        [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -557,6 +552,7 @@ static NSString *MembCenter = @"app=member";
 }
 - (void)setCookie {
     //判断系统是否支持wkWebView
+
     Class wkWebView = NSClassFromString(@"WKWebView");
     if (!wkWebView) {
         return;
@@ -569,7 +565,6 @@ static NSString *MembCenter = @"app=member";
     [webView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(NSString *oldAgent, NSError * _Nullable error) {
         NSLog(@"oldAgent%@",oldAgent);
     }];
-    
     
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
     config.processPool = self.processPool;
@@ -590,6 +585,11 @@ static NSString *MembCenter = @"app=member";
     self.wkWebView.scrollView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 
     [self.view addSubview:_wkWebView];
+    
+    [_wkWebView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(NSString* ua, NSError * _Nullable error) {
+        //            userAg = ua;
+        NSLog(@"UA %@",ua);
+    }];
 }
 // save cookie to local
 -(void)saveCookieArr{

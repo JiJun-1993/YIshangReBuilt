@@ -51,9 +51,7 @@
                                               options:0];
         sharedView = nibViews[0];
     });
-    
     return sharedView;
-
 }
 +(void)show{
     [[self showProWithView] startRoll];
