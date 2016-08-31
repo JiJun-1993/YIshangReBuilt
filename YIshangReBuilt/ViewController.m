@@ -428,17 +428,15 @@ static NSString *MembCenter = @"app=member";
     }
     decisionHandler(WKNavigationResponsePolicyAllow);
 }
-
 - (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation{
     
-//    [self disProgress];
-//    [MBProgressHUD hideHUDForView:self.view animated:YES];
-    
-    // 这里每次加载而完毕就存储cookie
     [self disProgress];
-    [self addCookies];
+    
+    // 这里每次加载而完毕就处理cookie
+    [self dealCookie];
 //    [self saveCookieArr];
 }
+// 如果加载失败，就停止加载，返回
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error{
     [_wkWebView stopLoading];
       if ([error code] == NSURLErrorCancelled) {
@@ -467,7 +465,7 @@ static NSString *MembCenter = @"app=member";
      
              [_wkWebView evaluateJavaScript:@"document.cookie.split(';')" completionHandler:^(NSArray* cookieStr, NSError * _Nullable error) {
                  // 存储cookie
-                 [self saveCookieArr];
+//                 [self saveCookieArr];
              }];
         }
          else
@@ -497,10 +495,7 @@ static NSString *MembCenter = @"app=member";
     NSString* res = WxreqWithCode(response.code);
    
     if (res) {
-        
         [ _wkWebView loadRequest:[NSURLRequest requestWithString:res]];
-        [self saveCookieArr];
-        
     }
     else [_wkWebView loadRequest:[NSURLRequest requestWithString:MembCenter]];
     
@@ -512,19 +507,15 @@ static NSString *MembCenter = @"app=member";
             _processPool = [[WKProcessPool alloc] init];
         });
     }
-    
     return _processPool;
 }
 - (void)setCookie {
     //判断系统是否支持wkWebView
-
     Class wkWebView = NSClassFromString(@"WKWebView");
     if (!wkWebView) {
         return;
     }
-    
     WKWebView* webView = [[WKWebView alloc]initWithFrame:CGRectZero];
-    
     NSDictionary *dictionnary = [[NSDictionary alloc] initWithObjectsAndKeys:@"vipysw_cmnetec_ios", @"UserAgent", nil];
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionnary];
     [webView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(NSString *oldAgent, NSError * _Nullable error) {
@@ -556,50 +547,43 @@ static NSString *MembCenter = @"app=member";
 //        JJLog(@"UA %@",ua);
     }];
 }
-// save cookie to local
--(void)saveCookieArr{
-    
-    // 把cookie存储到本地
-    [_wkWebView evaluateJavaScript:@"document.cookie.split(';')" completionHandler:^(NSArray* cookieStr, NSError * _Nullable error) {
-        
-        //                 获得沙盒路径
-        NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        //获取文件路径，由于归档后文件会加密，所以文件后缀可以任意取
-        NSString *filePath = [documentPath stringByAppendingPathComponent:@"cookie.archiver"];
-        
-        JJLog(@"finifi _ shcookies %@",cookieStr);
-        BOOL exist =[NSKeyedArchiver archiveRootObject:cookieStr toFile:filePath];
-        if (!exist) {
-        }
-    }];
-}
--(void)addCookies{
-    //获得沙盒路径
+#pragma mark  处理cookie
+-(void)dealCookie{
+     // 1 获得沙盒路径
     NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-    
     NSString *filePath = [documentPath stringByAppendingPathComponent:@"cookie.archiver"];
     
-    NSArray* cookieArr =  [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-    JJLog(@"cookieArr %@",cookieArr);
-    if (cookieArr != nil) {
-        //   js函数
-        NSString *JSFuncString = @"function setCookie(name,value,expires)\
-        {\
-        var oDate=new Date();\
-        oDate.setDate(oDate.getDate()+expires);\
-        document.cookie=name+'='+value+';expires='+oDate;\
-        }";
-        //  拼凑js字符串
-        NSMutableString *JSCookieString = JSFuncString.mutableCopy;
-        for (NSString* aCookie in cookieArr) {
-            NSArray* arr = [aCookie componentsSeparatedByString:@"="];
-            NSString *excuteJSString = [NSString stringWithFormat:@"setCookie('%@', '%@', 1);", arr[0], arr[1]];
-            [JSCookieString appendString:excuteJSString];
+    // 2 获取旧cookie
+    __block NSArray* localCookies =  [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+
+    [_wkWebView evaluateJavaScript:@"document.cookie.split(';')" completionHandler:^(NSArray* cookieStr, NSError * _Nullable error) {
+  
+        // 3 将新旧cookie的并集存储，并加入到Webview中
+        if (cookieStr != nil) {
+            localCookies = [NSSet unionSetOfA:localCookies arrayB:cookieStr];
         }
+    }];
+    if(localCookies){
+    //   js函数
+    NSString *JSFuncString = @"function setCookie(name,value,expires)\
+    {\
+    var oDate=new Date();\
+    oDate.setDate(oDate.getDate()+expires);\
+    document.cookie=name+'='+value+';expires='+oDate;\
+    }";
+    //  拼凑js字符串
+    NSMutableString *JSCookieString = JSFuncString.mutableCopy;
+    for (NSString* aCookie in localCookies) {
+        NSArray* arr = [aCookie componentsSeparatedByString:@"="];
+        NSString *excuteJSString = [NSString stringWithFormat:@"setCookie('%@', '%@', 1);", arr[0], arr[1]];
+        [JSCookieString appendString:excuteJSString];
+        
         //执行js
         [_wkWebView evaluateJavaScript:JSCookieString completionHandler:nil];
     }
-
+    }
+    // 将新的cookie存储起来
+    [NSKeyedArchiver archiveRootObject:localCookies toFile:filePath];
 }
 // 退出时消除存储的cookie
 -(void)logOut{

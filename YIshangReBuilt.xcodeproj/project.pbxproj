@@ -56,6 +56,7 @@
 		044334301D6EDE24002B5341 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0443342C1D6EDE24002B5341 /* MBProgressHUD.m */; };
 		044334311D6EDE24002B5341 /* viewPro.m in Sources */ = {isa = PBXBuildFile; fileRef = 0443342E1D6EDE24002B5341 /* viewPro.m */; };
 		044334321D6EDE24002B5341 /* viewPro.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0443342F1D6EDE24002B5341 /* viewPro.xib */; };
+		044386951D76B3CB00B6B3F0 /* NSSet+Set_Union.m in Sources */ = {isa = PBXBuildFile; fileRef = 044386941D76B3CB00B6B3F0 /* NSSet+Set_Union.m */; };
 		045F2DDD1D6B05FE0010FD6E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045F2DDC1D6B05FE0010FD6E /* Security.framework */; };
 		045F2DDF1D6B060A0010FD6E /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 045F2DDE1D6B060A0010FD6E /* libiconv.tbd */; };
 		045F2DE11D6B06100010FD6E /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 045F2DE01D6B06100010FD6E /* SystemConfiguration.framework */; };
@@ -169,6 +170,8 @@
 		0443342D1D6EDE24002B5341 /* viewPro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = viewPro.h; sourceTree = "<group>"; };
 		0443342E1D6EDE24002B5341 /* viewPro.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = viewPro.m; sourceTree = "<group>"; };
 		0443342F1D6EDE24002B5341 /* viewPro.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = viewPro.xib; sourceTree = "<group>"; };
+		044386931D76B3CB00B6B3F0 /* NSSet+Set_Union.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSSet+Set_Union.h"; sourceTree = "<group>"; };
+		044386941D76B3CB00B6B3F0 /* NSSet+Set_Union.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSSet+Set_Union.m"; sourceTree = "<group>"; };
 		045F2DDC1D6B05FE0010FD6E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		045F2DDE1D6B060A0010FD6E /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		045F2DE01D6B06100010FD6E /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -427,6 +430,8 @@
 				045F2FEF1D6B140F0010FD6E /* NSURLRequest+WithString.m */,
 				040FDE081D4E3BD7001B1B6C /* UIView+Frame.h */,
 				040FDE091D4E3BD7001B1B6C /* UIView+Frame.m */,
+				044386931D76B3CB00B6B3F0 /* NSSet+Set_Union.h */,
+				044386941D76B3CB00B6B3F0 /* NSSet+Set_Union.m */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -804,6 +809,7 @@
 				04678A2A1D74088D00E83EB5 /* SharePan.m in Sources */,
 				044334301D6EDE24002B5341 /* MBProgressHUD.m in Sources */,
 				045F2FEC1D6B129C0010FD6E /* WXApiManager.m in Sources */,
+				044386951D76B3CB00B6B3F0 /* NSSet+Set_Union.m in Sources */,
 				040FDDCA1D4E3824001B1B6C /* AppDelegate.m in Sources */,
 				04222B771D6461FD00AF7CB4 /* QQCover.m in Sources */,
 				04B26D461D73C2AA00F35654 /* ShareCustom.m in Sources */,

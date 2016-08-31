@@ -12,9 +12,10 @@
 #ifdef DEBUG
 #define JJLog(FORMAT, ...) fprintf(stderr,"%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
 #endif
-
+// Category
 #import "UIView+Frame.h"
 #import "NSURLRequest+WithString.h"
+#import "NSSet+Set_Union.h"
 // 微信
 #import <ShareSDK/ShareSDK.h>
 #import <TencentOpenAPI/QQApiInterface.h>
