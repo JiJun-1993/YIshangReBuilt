@@ -83,6 +83,7 @@ static NSString *MembCenter = @"app=member";
     
     [self setNaviBar];
     
+    NSSet* set;
 //    [self initParameter];
 //    [self setMainPage ];
     [self setCookie];
@@ -283,17 +284,6 @@ static NSString *MembCenter = @"app=member";
     _coverView.alpha = 0.1;
     
     [self.view addSubview:_coverView];
-//    // 添加分享对象
-//    JudgeViewType logType;
-//    logType = 0;
-//    self.seleObj = [JudgeLogView  instanceJudgeViewStyle:logType];
-//    //    self.seleObj.width = 20;
-//    self.seleObj.delegate = self;
-////    self.seleObj.alpha = 0;
-//    self.seleObj.center = self.view.center;
-//    self.seleObj.y = [UIScreen mainScreen].bounds.size.height;
-//    [self.view addSubview:self.seleObj];
-    
 }
 #pragma mark -- return click
 -(void)returnClick:(UIButton*)returnBtn{
@@ -406,6 +396,8 @@ static NSString *MembCenter = @"app=member";
 #pragma mark delegate of  webview
 -(void)webView:(WKWebView *)webView didStartProvisionalNavigation:(WKNavigation *)navigation{
     [self showProgress];
+    // 加载之前设置cookies
+//    [self addCookies];
 //   _progresHUD = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 }
 
@@ -416,10 +408,6 @@ static NSString *MembCenter = @"app=member";
     NSString* strHtml = navigationAction.request.URL.absoluteString;
     _previousUrl = _clickedUrl;
     _clickedUrl = strHtml;
-    
-    [webView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(NSString *oldAgent, NSError * _Nullable error) {
-        NSLog(@"oldAgent%@",oldAgent);
-    }];
     if ([strHtml rangeOfString:QQloginClick].location != NSNotFound || [strHtml rangeOfString:WxLoginClick].location != NSNotFound) {
         [self logInWithHtml:strHtml];
 //        [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -445,33 +433,11 @@ static NSString *MembCenter = @"app=member";
     
 //    [self disProgress];
 //    [MBProgressHUD hideHUDForView:self.view animated:YES];
+    
+    // 这里每次加载而完毕就存储cookie
     [self disProgress];
-
-    
-    //获得沙盒路径
-    NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-
-    NSString *filePath = [documentPath stringByAppendingPathComponent:@"cookie.archiver"];
-    
-    NSArray* cookieArr =  [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
-    if (cookieArr != nil) {
-//        //js函数
-        NSString *JSFuncString = @"function setCookie(name,value,expires)\
-        {\
-        var oDate=new Date();\
-        oDate.setDate(oDate.getDate()+expires);\
-        document.cookie=name+'='+value+';expires='+oDate;\
-        }";
-        //拼凑js字符串
-        NSMutableString *JSCookieString = JSFuncString.mutableCopy;
-        for (NSString* aCookie in cookieArr) {
-            NSArray* arr = [aCookie componentsSeparatedByString:@"="];
-            NSString *excuteJSString = [NSString stringWithFormat:@"setCookie('%@', '%@', 1);", arr[0], arr[1]];
-            [JSCookieString appendString:excuteJSString];
-        }
-        //执行js
-        [webView evaluateJavaScript:JSCookieString completionHandler:nil];
-    }
+    [self addCookies];
+//    [self saveCookieArr];
 }
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error{
     [_wkWebView stopLoading];
@@ -510,7 +476,6 @@ static NSString *MembCenter = @"app=member";
          }
          
      }];
-//
 }
 -(void)loginWx{
     SendAuthReq* req = [[SendAuthReq alloc] init];
@@ -563,7 +528,7 @@ static NSString *MembCenter = @"app=member";
     NSDictionary *dictionnary = [[NSDictionary alloc] initWithObjectsAndKeys:@"vipysw_cmnetec_ios", @"UserAgent", nil];
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionnary];
     [webView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(NSString *oldAgent, NSError * _Nullable error) {
-        NSLog(@"oldAgent%@",oldAgent);
+//        JJLog(@"oldAgent%@",oldAgent);
     }];
     
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
@@ -588,7 +553,7 @@ static NSString *MembCenter = @"app=member";
     
     [_wkWebView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(NSString* ua, NSError * _Nullable error) {
         //            userAg = ua;
-        NSLog(@"UA %@",ua);
+//        JJLog(@"UA %@",ua);
     }];
 }
 // save cookie to local
@@ -602,14 +567,39 @@ static NSString *MembCenter = @"app=member";
         //获取文件路径，由于归档后文件会加密，所以文件后缀可以任意取
         NSString *filePath = [documentPath stringByAppendingPathComponent:@"cookie.archiver"];
         
-//        NSError* errors = [[NSError alloc]init];
-       
+        JJLog(@"finifi _ shcookies %@",cookieStr);
         BOOL exist =[NSKeyedArchiver archiveRootObject:cookieStr toFile:filePath];
         if (!exist) {
-            
         }
-        
     }];
+}
+-(void)addCookies{
+    //获得沙盒路径
+    NSString *documentPath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    
+    NSString *filePath = [documentPath stringByAppendingPathComponent:@"cookie.archiver"];
+    
+    NSArray* cookieArr =  [NSKeyedUnarchiver unarchiveObjectWithFile:filePath];
+    JJLog(@"cookieArr %@",cookieArr);
+    if (cookieArr != nil) {
+        //   js函数
+        NSString *JSFuncString = @"function setCookie(name,value,expires)\
+        {\
+        var oDate=new Date();\
+        oDate.setDate(oDate.getDate()+expires);\
+        document.cookie=name+'='+value+';expires='+oDate;\
+        }";
+        //  拼凑js字符串
+        NSMutableString *JSCookieString = JSFuncString.mutableCopy;
+        for (NSString* aCookie in cookieArr) {
+            NSArray* arr = [aCookie componentsSeparatedByString:@"="];
+            NSString *excuteJSString = [NSString stringWithFormat:@"setCookie('%@', '%@', 1);", arr[0], arr[1]];
+            [JSCookieString appendString:excuteJSString];
+        }
+        //执行js
+        [_wkWebView evaluateJavaScript:JSCookieString completionHandler:nil];
+    }
+
 }
 // 退出时消除存储的cookie
 -(void)logOut{
@@ -622,7 +612,7 @@ static NSString *MembCenter = @"app=member";
     NSError* error = [[NSError alloc]init];
     [fileManager removeItemAtPath:filePath error:&error];
     if ([fileManager fileExistsAtPath:filePath]) {
-        NSLog(@"没删除干净");
+        JJLog(@"没删除干净");
     }
 }
 #pragma  mark  setUserAgent
@@ -633,16 +623,10 @@ static NSString *MembCenter = @"app=member";
     
     [_wkWebView evaluateJavaScript:@"navigator.userAgent" completionHandler:^(NSString *oldAgent, NSError * _Nullable error) {
         oldAgents = oldAgent;
-        NSLog(@"oldAgent%@",oldAgent);
+        JJLog(@"oldAgent%@",oldAgent);
     }];
     //add my info to the new agent
     NSString *newAgent = @"vipysw_cmnetec_ios";
-    
-//    [oldAgent stringByAppendingString:@" Jiecao/2.4.7 ch_appstore"];
-    
-    //regist the new agent
-//    NSDictionary *dictionnary = [[NSDictionary alloc] initWithObjectsAndKeys:newAgent, @"UserAgent", nil];
-//    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionnary];
 }
 
 #pragma mark  预备和善后

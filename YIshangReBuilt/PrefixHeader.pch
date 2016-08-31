@@ -9,6 +9,10 @@
 #ifndef PrefixHeader_pch
 #define PrefixHeader_pch
 
+#ifdef DEBUG
+#define JJLog(FORMAT, ...) fprintf(stderr,"%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
+#endif
+
 #import "UIView+Frame.h"
 #import "NSURLRequest+WithString.h"
 // 微信

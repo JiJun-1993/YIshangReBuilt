@@ -115,7 +115,7 @@
         NSString *response = responseInfo[UIUserNotificationActionResponseTypedTextKey];
         
         //对输入的文字作处理
-        NSLog(@"response %@",response);
+        JJLog(@"response %@",response);
     }
     completionHandler();
 }
